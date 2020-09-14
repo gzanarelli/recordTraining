@@ -1,0 +1,68 @@
+version: '3.1'
+
+services:
+  app:
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - "./app:/app"
+    networks:
+      - webgateway
+      - default
+    depends_on:
+      - mongo
+    env_file:
+      - .env
+    environment:
+      DEBUG: 'recordWorkout:*'
+      DOMAIN: 'http://api.${DOMAIN}'
+      EXPIRE_TOKEN: 2h
+      EXPIRE_REFRESH: 7d
+      HS512_TOKEN: hedfednedve
+      HS512_REFRESH: jekfdeldliafdf
+
+      MONGODB_ADDON_URI: mongodb://mongo/recordwork
+      MONGODB_ADDON_DB: recordwork
+      MONGODB_ADDON_PASSWORD: ${DB_PASS}
+      MONGODB_ADDON_USER: ${DB_USER}
+      MONGO_ADDON_HOST: mongo
+
+      NODE_ENV: development
+      ENABLE_CLEAN: 'true'
+      PORT: 8080
+
+    labels:
+      traefik.enable: 'true'
+      traefik.port: 8080
+      traefik.acme: 'false'
+      traefik.frontend.rule: 'Host:api.${DOMAIN}'
+      traefik.docker.network: 'traefikforwebdev_webgateway'
+      traefik.frontend.redirect.regex: ''
+      traefik.frontend.redirect.replacement: ''
+
+  mongo:
+    image: mongo:4
+    volumes:
+      - "database:/data/db"
+    ports:
+      - "28023:27017"
+    env_file:
+      - .env
+    environment:
+      MONGODB_ADDON_DB: recordwork
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+      MONGO_INITDB_ROOT_USERNAME: ${DB_PASS}
+      MONGODB_ADDON_PASSWORD: ${DB_PASS}
+      MONGODB_ADDON_USER: ${DB_USER}
+    labels:
+      traefik.enable: "false"
+
+networks:
+  webgateway:
+    external:
+      name: traefikforwebdev_webgateway
+
+volumes:
+  database:
