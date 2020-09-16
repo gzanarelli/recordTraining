@@ -45,7 +45,7 @@ services:
   mongo:
     image: mongo:4
     volumes:
-      - "database:/data/db"
+      - "/data:/data/db"
     ports:
       - "28023:27017"
     env_file:
