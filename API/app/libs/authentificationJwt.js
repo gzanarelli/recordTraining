@@ -10,16 +10,15 @@ const Promise = require('bluebird')
  * a lifetime for token: 2h
  * and for refresh token: 3d
  */
-const verify = (token, publicKey) => {
-  return new Promise((resolve, reject) => {
-    return jwt.verify(
-      token,
-      publicKey,
-      (err, decoded) => {
-        if (err) { reject(err) }
-        resolve(decoded)  
-      })
-  })
+const verify = (req, res, next) => {
+  console.log(req.headers.token)
+  return jwt.verify(
+    req.headers.token,
+    process.env.JWT_PUB,
+    (err, decoded) => {
+      if (err) { next(err) }
+      next(req.decoded = decoded)  
+    })
 }
 
 const sign = (payload, privateKey, expiresIn) => {

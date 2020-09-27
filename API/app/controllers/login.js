@@ -26,7 +26,10 @@ router.post(
         const match = await bcrypt.compare(password, user.password)
         if (match) {
           authentification.sign(
-            _.get(req, 'body.email',null),
+            {
+              email: _.get(user, 'email',null),
+              _id: _.get(user, '_id',null)
+            },
             process.env.JWT_PRIVATE,
             process.env.EXPIRE_TOKEN
             ).then(token => {

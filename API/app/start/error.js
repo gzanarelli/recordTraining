@@ -8,6 +8,7 @@ module.exports = (app) => {
   })
 
   app.use((err, req, res, next) => {
+    console.log('Error found')
     res.json(boom.boomify(err))
   })
 }
