@@ -4,36 +4,36 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Promise = require('bluebird')
 
-const _jwt = Promise.promisifyAll(jwt)
-
 /**
  * Verification user's token with
- * an algorithm RS256 and
+ * an algorithm RS512 and
  * a lifetime for token: 2h
  * and for refresh token: 3d
  */
 const verify = (token, publicKey) => {
-  _jwt.verify(
-    token,
-    publicKey
-  )
-    .then(decoded => {
-      return decoded
-    })
-    .catch(err => { return err })
+  return new Promise((resolve, reject) => {
+    jwt.verify(
+      token,
+      publicKey,
+      (err, decoded) => {
+        if (err) { reject(err) }
+        resolve(decoded)  
+      })
+  })
 }
 
-const sign = (payload, privateKey, expireIn) => {
-  _jwt.sign({
-    payload
-  }, privateKey, {
-    algorithm: process.env.JWT_ALGORITHM,
-    expireIn
-  })
-    .then(token => {
-      return token
+const sign = (payload, privateKey, expiresIn) => {
+  return new Promise((resolve, reject) => {
+    return jwt.sign({
+      payload
+    }, privateKey, {
+      algorithm: 'RS256',
+      expiresIn
+    }, (err, token) => {
+      if (err) { reject(err) }
+      resolve(token)
     })
-    .catch(err => { return err })
+  }) 
 }
 
 module.exports = { sign, verify }
