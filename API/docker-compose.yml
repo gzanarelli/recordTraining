@@ -53,7 +53,7 @@ services:
     environment:
       MONGODB_ADDON_DB: recordwork
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
-      MONGO_INITDB_ROOT_USERNAME: ${DB_PASS}
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
       MONGODB_ADDON_PASSWORD: ${DB_PASS}
       MONGODB_ADDON_USER: ${DB_USER}
     labels:
