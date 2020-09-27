@@ -31,11 +31,11 @@ services:
 
       NODE_ENV: development
       ENABLE_CLEAN: 'true'
-      PORT: 8080
+      PORT: 8383
 
     labels:
       traefik.enable: 'true'
-      traefik.port: 8080
+      traefik.port: 8383
       traefik.acme: 'false'
       traefik.frontend.rule: 'Host:api.${DOMAIN}'
       traefik.docker.network: 'traefikforwebdev_webgateway'
@@ -45,9 +45,9 @@ services:
   mongo:
     image: mongo:4
     volumes:
-      - "/data:/data/db"
+      - "database:/data/db"
     ports:
-      - "28023:27017"
+      - "28018:27017"
     env_file:
       - .env
     environment:

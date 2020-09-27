@@ -8,6 +8,9 @@ const path = require('path')
 
 mongoose.Promise = Promise
 
+/**
+ * Get all models in /models/*.js
+ */
 glob.sync(path.join(__dirname, '../models/*.js')).map(function (modelPath) {
   debug('Require models %s', modelPath)
   require(modelPath)
