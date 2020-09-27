@@ -7,7 +7,7 @@ module.exports = (app) => {
     res.json(boom.notFound())
   })
 
-  app.use((req, res, err) => {
+  app.use((err, req, res, next) => {
     res.json(boom.boomify(err))
   })
 }

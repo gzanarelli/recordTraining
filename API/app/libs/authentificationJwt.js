@@ -12,7 +12,7 @@ const Promise = require('bluebird')
  */
 const verify = (token, publicKey) => {
   return new Promise((resolve, reject) => {
-    jwt.verify(
+    return jwt.verify(
       token,
       publicKey,
       (err, decoded) => {
@@ -27,7 +27,7 @@ const sign = (payload, privateKey, expiresIn) => {
     return jwt.sign({
       payload
     }, privateKey, {
-      algorithm: 'RS256',
+      algorithm: process.env.JWT_ALGORITHM,
       expiresIn
     }, (err, token) => {
       if (err) { reject(err) }

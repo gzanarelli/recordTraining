@@ -17,6 +17,10 @@ module.exports = {
       .matches(/[a-zA-Z]/)
       .matches(/[\d]/)
       .matches(/[\W]/)
+      .optional(false),
+    body('pseudo')
+      .isLength({ min: 3, max: 16 })
+      .isString()
       .optional(false)
   ]
 }
