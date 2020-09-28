@@ -36,5 +36,5 @@ glob
 require('./start/error')(app)
 
 app.listen(process.env.PORT, () => {
-  console.log('listen on port')
+  console.log('listen on port ' + process.env.PORT)
 })

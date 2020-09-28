@@ -2,6 +2,7 @@
 
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const base64 = require('base-64')
 const Promise = require('bluebird')
 
 /**
@@ -12,12 +13,16 @@ const Promise = require('bluebird')
  */
 const verify = (req, res, next) => {
   console.log(req.headers.token)
+  console.log(process.env.JWT_PUB)
   return jwt.verify(
     req.headers.token,
     process.env.JWT_PUB,
     (err, decoded) => {
+      console.log(err)
+      console.log(decoded)
       if (err) { next(err) }
-      next(req.decoded = decoded)  
+      req.decoded = decoded
+      next()
     })
 }
 
@@ -26,13 +31,12 @@ const sign = (payload, privateKey, expiresIn) => {
     return jwt.sign({
       payload
     }, privateKey, {
-      algorithm: process.env.JWT_ALGORITHM,
       expiresIn
     }, (err, token) => {
       if (err) { reject(err) }
       resolve(token)
     })
-  }) 
+  })
 }
 
 module.exports = { sign, verify }

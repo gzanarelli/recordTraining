@@ -1,36 +1,45 @@
-const { header, query, body, param } = require('express-validator/check')
+const { header, query, body, param } = require('express-validator')
 
 module.exports = {
   CREATE: [
+    header('token')
+      .isMongoId(),
     body('label')
       .isString()
       .optional(false),
-		body('userId')
-			.isMongoId()
-			.optional(false),
-		body('sessionId')
-			.isMongoId()
-			.optional(true)
+    body('sessionId')
+      .isMongoId()
+      .optional(true)
   ],
   READ: [
-    body('email')
-      .isEmail()
-      .optional(false),
-    body('password')
-      .isLength({ min: 8 })
-      .matches(/[a-zA-Z]/)
-      .matches(/[\d]/)
-      .matches(/[\W]/)
-      .optional(false),
-    body('pseudo')
-      .isLength({ min: 3, max: 16 })
-      .isString()
+    header('token')
+      .isMongoId(),
+    param('noteId')
+      .isMongoId()
       .optional(false)
-	],
-	UPDATE: [
-
-	],
-	DELETE: [
-
-	]
+  ],
+  UPDATE: [
+    header('token')
+      .isMongoId(),
+    param('noteId')
+      .isMongoId()
+      .optional(false),
+    body('label')
+      .isString()
+      .optional(false),
+    body('sessionId')
+      .isMongoId()
+      .optional(true)
+  ],
+  DELETE: [
+    header('token')
+      .isMongoId(),
+    param('noteId')
+      .isMongoId()
+      .optional(false)
+  ],
+  LIST: [
+    header('token')
+      .isMongoId()
+  ]
 }

@@ -1,4 +1,4 @@
-const { header, query, body, param } = require('express-validator/check')
+const { header, query, body, param } = require('express-validator')
 
 module.exports = {
   LOGIN: [
