@@ -7,7 +7,7 @@ const _ = require('lodash')
 const mongoose = require('mongoose')
 const Note = mongoose.model('notes')
 module.exports = (app) => {
-  app.use('/note', router)
+  app.use('/exercise', router)
 }
 
 /**

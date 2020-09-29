@@ -11,6 +11,7 @@
   "author": "gzanarelli",
   "license": "ISC",
   "dependencies": {
+    "@hapi/boom": "^9.1.0",
     "base-64": "^0.1.0",
     "bcrypt": "^5.0.0",
     "bluebird": "^3.7.2",

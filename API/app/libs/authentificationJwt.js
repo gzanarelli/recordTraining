@@ -1,8 +1,6 @@
 'use strict'
 
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
-const base64 = require('base-64')
 const Promise = require('bluebird')
 
 /**

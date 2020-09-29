@@ -1,6 +1,6 @@
 'use strict'
 
-const boom = require('boom')
+const boom = require('@hapi/boom')
 
 module.exports = (app) => {
   app.use((req, res, next) => {
@@ -8,7 +8,6 @@ module.exports = (app) => {
   })
 
   app.use((err, req, res, next) => {
-    console.log('Error found')
     res.json(boom.boomify(err))
   })
 }
