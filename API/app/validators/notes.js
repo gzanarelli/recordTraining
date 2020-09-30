@@ -3,7 +3,7 @@ const { header, query, body, param } = require('express-validator')
 module.exports = {
   CREATE: [
     header('token')
-      .isMongoId(),
+      .isJWT(),
     body('label')
       .isString()
       .optional(false),
@@ -13,14 +13,14 @@ module.exports = {
   ],
   READ: [
     header('token')
-      .isMongoId(),
+      .isJWT(),
     param('noteId')
       .isMongoId()
       .optional(false)
   ],
   UPDATE: [
     header('token')
-      .isMongoId(),
+      .isJWT(),
     param('noteId')
       .isMongoId()
       .optional(false),
@@ -33,13 +33,13 @@ module.exports = {
   ],
   DELETE: [
     header('token')
-      .isMongoId(),
+      .isJWT(),
     param('noteId')
       .isMongoId()
       .optional(false)
   ],
   LIST: [
     header('token')
-      .isMongoId()
+      .isJWT()
   ]
 }

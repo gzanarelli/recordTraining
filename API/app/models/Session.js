@@ -10,7 +10,7 @@ const sessionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'users'
   },
-  exerciceId: [{
+  exercisesId: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'exercices'
   }],

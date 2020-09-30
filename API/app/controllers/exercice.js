@@ -1,77 +1,104 @@
 'use strict'
 
-const validator = require('../validators/notes')
+const validator = require('../validators/exercises')
 const router = require('express').Router()
 const authentification = require('../libs/authentificationJwt')
 const _ = require('lodash')
+const validationErrorsResponses = require('../libs/validationResponses')
 const mongoose = require('mongoose')
-const Note = mongoose.model('notes')
+const Exercise = mongoose.model('exercises')
+const Session = mongoose.model('sessions')
+
 module.exports = (app) => {
   app.use('/exercise', router)
 }
 
 /**
- * CRUD on collection's notes
+ * CRUD on collection's exercises
  */
 
 router.get(
   '/',
   validator.LIST,
+  validationErrorsResponses,
   authentification.verify,
   async (req, res, next) => {
-    const notes = await Note.find({ })
-    res.json({ notes })
+    const exercises = await Exercise.find({ })
+    res.json({ exercises })
   })
 
 router.post(
   '/',
   validator.CREATE,
+  validationErrorsResponses,
   authentification.verify,
   (req, res, next) => {
-    const note = new Note({
-      label: _.get(req, 'body.label', ''),
-      userId: _.get(req, 'decoded.payload._id', ''),
-      seesionId: []
+    const ID = mongoose.Types.ObjectId()
+    const exercise = new Exercise({
+      _id: ID,
+      value: _.get(req, 'body.value', 'nc'),
+      label: _.get(req, 'body.label', 'N/C'),
+      numberSessions: _.get(req, 'body.numberSessions', 1),
+      numberRepetitions: _.get(req, 'body.numberRepetitions', 1),
+      weight: _.get(req, 'body.weight', 1),
+      timeOut: _.get(req, 'body.timeOut', '1')
     })
-    note.save()
+    exercise.save()
       .then(() => {
-        return res.json({ status: true, message: 'Note create.' })
+        console.log(ID)
+        Session.updateOne({
+          _id: _.get(req, 'body.sessionId', null)
+        }, {
+          $push: { exercisesId: ID }
+        })
+          .then(res.json({ status: true, message: 'Exercise create.' }))
       })
       .catch(next)
   })
 
 router.get(
-  '/:noteId',
+  '/:exerciseId',
   validator.READ,
+  validationErrorsResponses,
   authentification.verify,
   (req, res, next) => {
-    Note.findOne({ _id: _.get(req, 'params.noteId', null) })
-      .then(note => res.json(_.omit(note.toJSON(), ['userId'])))
+    Exercise.findOne({ _id: _.get(req, 'params.exerciseId', null) })
+      .then(exercise => res.json(_.omit(exercise.toJSON(), ['userId'])))
       .catch(next)
   })
 
 router.put(
-  '/:noteId',
+  '/:exerciseId',
   validator.UPDATE,
+  validationErrorsResponses,
   authentification.verify,
   (req, res, next) => {
-    Note.updateOne({
-      _id: _.get(req, 'params.noteId', null)
+    Exercise.updateOne({
+      _id: _.get(req, 'params.exerciseId', null)
     }, {
       $set: {
-        label: _.get(req, 'body.label', ''),
-        sessionId: _.get(req, 'body.sessionId', [])
+        value: _.get(req, 'body.value', 'nc'),
+        label: _.get(req, 'body.label', 'N/C'),
+        numberSessions: _.get(req, 'body.numberSessions', 1),
+        numberRepetitions: _.get(req, 'body.numberRepetitions', 1),
+        weight: _.get(req, 'body.weight', 1),
+        timeOut: _.get(req, 'body.timeOut', '1')
       }
     })
-      .then(res.json({ status: true, message: 'Note updated.' }))
+      .then(res.json({ status: true, message: 'Exercise updated.' }))
   })
 
 router.delete(
-  '/:noteId',
+  '/:exerciseId',
   validator.DELETE,
+  validationErrorsResponses,
   authentification.verify,
-  async (req, res, next) => {
-    const note = await Note.findOne({ _id: _.get(req, 'params.noteId', null) })
-    note.remove()
-    res.json({ status: true, message: 'Note deleted.' })
+  (req, res, next) => {
+    Exercise.deleteOne({ _id: _.get(req, 'params.exerciseId', null) })
+      .then(() => {
+        Session.updateOne({ exercisesId: { $in: _.get(req, 'params.exerciseId', null) } },
+          { $pull: { exercisesId: _.get(req, 'params.exerciseId', null) } })
+          .then(res.json({ status: true, message: 'Exercise deleted.' }))
+          .catch(next)
+      })
   })

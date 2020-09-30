@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose')
 
-const exerciceSchema = new mongoose.Schema({
+const exerciseSchema = new mongoose.Schema({
   value: {
     type: String
   },
@@ -25,14 +25,10 @@ const exerciceSchema = new mongoose.Schema({
     type: Number,
     default: 90 // minutes
   },
-  exerciceId: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'exercices'
-  }],
   createAt: {
     type: Date,
     default: Date.now()
   }
 })
 
-mongoose.model('exercices', exerciceSchema)
+mongoose.model('exercises', exerciseSchema)

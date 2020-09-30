@@ -7,6 +7,9 @@ const _ = require('lodash')
 const mongoose = require('mongoose')
 const Session = mongoose.model('sessions')
 const Note = mongoose.model('notes')
+const Exercise = mongoose.model('exercises')
+const Promise = require('bluebird')
+
 module.exports = (app) => {
   app.use('/session', router)
 }
@@ -34,11 +37,10 @@ router.post(
       _id: ID,
       label: _.get(req, 'body.label', ''),
       userId: _.get(req, 'decoded.payload._id', ''),
-      exerciceId: []
+      exercicesId: []
     })
     session.save()
       .then(() => {
-        console.log(ID)
         Note.updateOne({ _id: _.get(req, 'body.noteId') },
           { $push: { sessionId: ID } })
           .then(res.json({ status: true, message: 'Session create.' }))
@@ -67,7 +69,7 @@ router.put(
     }, {
       $set: {
         label: _.get(req, 'body.label', ''),
-        exerciceId: _.get(req, 'body.sessionId', [])
+        exercicesId: _.get(req, 'body.exercicesId', [])
       }
     })
       .then(res.json({ status: true, message: 'Session updated.' }))
@@ -78,12 +80,16 @@ router.delete(
   validator.DELETE,
   authentification.verify,
   (req, res, next) => {
-    Session.deleteOne({ _id: _.get(req, 'params.sessionId', null) })
-      .then(() => {
-        Note.updateOne({ sessionId: { $in: _.get(req, 'params.sessionId', null) } },
-
-          { $pull: { sessionId: _.get(req, 'params.sessionId', null) } })
-          .then(res.json({ status: true, message: 'Session deleted.' }))
-          .catch(next)
+    Session.findOne({ _id: _.get(req, 'params.sessionId', null) })
+      .then(session => {
+        Promise.map(_.get(session, 'exercicesId', []), async exercice => {
+          await Exercise.deleteOne({ _id: exercice })
+        })
+          .then(() => {
+            Note.updateOne({ sessionId: { $in: _.get(req, 'params.sessionId', null) } },
+              { $pull: { sessionId: _.get(req, 'params.sessionId', null) } })
+              .then(res.json({ status: true, message: 'Session deleted.' }))
+              .catch(next)
+          })
       })
   })
