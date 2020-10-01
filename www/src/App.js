@@ -3,10 +3,12 @@ import Routes from './Routes'
 import './assets/main.scss'
 
 export default class App extends Component {
-  render() {
+  render () {
     return (
-      <div>
-        <Routes />
+      <div class='content'>
+        <div class='wrapper'>
+          <Routes />
+        </div>
       </div>
     )
   }
