@@ -1,0 +1,60 @@
+.loginBlock {
+	max-width: 500px;
+	width: 100%;
+	
+	
+	& + & {
+		margin-top: 30px;
+	}
+	
+	&__item {
+		display: flex;
+		font-size: 1.4rem;
+		border: 1px solid $dark-80;
+		border-radius: 15px;
+		justify-content: flex-end;
+		outline: none;
+		transition: border 300ms ease;
+
+		&:focus-within {
+			border: 1px solid $secondary;
+			border-radius: 15px;
+			
+			.loginBlock__label {
+				background-color: $secondary;
+				color: $dark;
+			}
+		}
+	}
+
+	&__label {
+		text-transform: capitalize;
+		display: flex;
+		flex: auto;
+		padding: 0 10px;
+		align-items: center;
+		color: $grey-light;
+		overflow: hidden;
+		border-radius: 14px 0 0 14px;
+		transition: all 300ms ease;
+	}
+	
+	&__input {
+		padding: 30px 10px;
+		margin-left: 5px;
+		width: 70%;
+		height: 20px;
+		text-align: left;
+		color: $grey-light;
+		background-color: transparent;
+		outline: none;
+		border: none;
+		border-radius: none;
+	}
+
+	&__error {
+		color: $sunset;
+		margin-top: 5px;
+		padding-left: 10px;
+	}
+}

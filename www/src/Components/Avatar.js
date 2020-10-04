@@ -3,12 +3,12 @@ import _ from 'lodash'
 
 export default function Avatar ({ infos }) {
   return (
-    <div class='avatar'>
+    <div className='avatar'>
       {
         _.get(infos, 'picture.link', null) ? (
-          <img src='' class='avatar__img' />
+          <img src='' className='avatar__img' />
         ) : (
-          <span class='avatar__letter'>
+          <span className='avatar__letter'>
             {_.get(infos, 'pseudo', '#')[0]}
           </span>
         )

@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import Avatar from './Avatar'
 export const Nav = () => {
   return (
-    <div class='nav'>
-      <div class='nav__profil'>
+    <div className='nav'>
+      <div className='nav__profil'>
         <Avatar infos={{ pseudo: 'Gabriel' }} />
       </div>
     </div>
@@ -12,11 +12,10 @@ export const Nav = () => {
 }
 
 const mapStateToProps = (state) => ({
-
 })
 
 const mapDispatchToProps = {
-
+  
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Nav)

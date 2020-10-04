@@ -1,13 +1,23 @@
+@import 'utils/colors';
+@import 'utils/fonts';
 @import 'utils/normalize';
-@import 'templates/home';
+@import 'utils/mixins';
+@import 'utils/base';
+
 @import 'components/avatar';
+@import 'components/button';
 @import 'components/card';
+@import 'components/loginBlock';
 @import 'components/nav';
 
+@import 'templates/home';
+@import 'templates/login';
+
 .content {
-  background-color: #121212;
+  background-color: $dark;
   font-size: 1.2rem;
   min-height: 100vh;
+  top: 0;
 }
 
 .wrapper {
