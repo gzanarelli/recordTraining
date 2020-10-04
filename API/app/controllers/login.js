@@ -20,6 +20,7 @@ router.post(
   validator.LOGIN,
   (req, res, next) => {
     const { email, password } = req.body
+    console.log(email, password)
     User.findOne({ email })
       .then(async user => {
         if (user) {

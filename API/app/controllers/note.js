@@ -28,6 +28,7 @@ router.post(
   validator.CREATE,
   authentification.verify,
   (req, res, next) => {
+    console.log(req.body)
     const note = new Note({
       label: _.get(req, 'body.label', ''),
       userId: _.get(req, 'decoded.payload._id', ''),
