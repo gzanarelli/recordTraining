@@ -2,7 +2,7 @@ import React from 'react'
 import { withRouter, Link } from 'react-router-dom';
 import _ from 'lodash'
 import { Formik, Form } from 'formik'
-import axios from 'axios'
+import axios from '../axios/axios'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as UserActions from '../Redux/actions/user'
@@ -74,33 +74,23 @@ class Login extends React.Component {
 		}
 
 		return (
-			<div>
-				<div className="login__select">
-					<a href="/login" className={`login__enter ${route === 'login' ? 'login__active' : ''}`}>
-							login
-					</a>
-					<a href="/signup" className={`login__enter ${route === 'signup' ? 'login__active' : ''}`}>
-							sign-up
-					</a>
-				</div>
-				<div className="login">
-					<Formik
-						initialValues={{ email: '', password: '', pseudo: '' }}
-						validate={this.validate}
-						onSubmit={this.onSubmit}
-					>
-					<Form className="login__form">
-						<LoginBlock value={'email'} type={'email'} />
-						<LoginBlock value={'password'} type={'password'} />
-						{
-							route === 'signup' ? (
-								<LoginBlock value={'pseudo'} type={'text'} />
-								) : ''
-							}
-						<button type="submit" className="login__submit">{ route }</button>
-					</Form>
-					</Formik>
-				</div>
+			<div className="login">
+				<Formik
+					initialValues={{ email: '', password: '', pseudo: '' }}
+					validate={this.validate}
+					onSubmit={this.onSubmit}
+				>
+				<Form className="login__form">
+					<LoginBlock value={'email'} type={'email'} />
+					<LoginBlock value={'password'} type={'password'} />
+					{
+						route === 'signup' ? (
+							<LoginBlock value={'pseudo'} type={'text'} />
+							) : ''
+						}
+					<button type="submit" className="login__submit">{ route }</button>
+				</Form>
+				</Formik>
 			</div>
 		)
 	}

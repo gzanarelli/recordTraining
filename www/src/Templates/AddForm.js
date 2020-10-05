@@ -1,7 +1,7 @@
 import React from 'react'
 import {Form, Formik} from 'formik'
 import _ from 'lodash'
-import axios from 'axios'
+import axios from '../axios/axios'
 import { connect } from 'react-redux'
 
 import Block from '../Components/Block'
@@ -63,12 +63,7 @@ class AddForm extends React.Component {
 	onSubmit = (values) => {
 		console.log('Token ad form: ', this.props)
 		const { infosForm } = this.state
-		axios.post(`${ process.env.REACT_APP_BACK_URL + infosForm.post}`,
-		values, {
-			headers: {
-				token: _.get(this, 'props.user.token', null)
-			}
-		})
+		axios.post(`${ process.env.REACT_APP_BACK_URL + infosForm.post}`, values)
 		.then(response => {
 			console.log('response :', response.data)
 		})

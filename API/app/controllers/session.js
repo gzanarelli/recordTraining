@@ -27,6 +27,24 @@ router.get(
     res.json({ sessions })
   })
 
+router.get(
+  '/',
+  validator.LIST,
+  authentification.verify,
+  async (req, res, next) => {
+    const sessions = await Session.find({ })
+    res.json({ sessions })
+  })
+
+router.get(
+  '/populate/:sessionId',
+  validator.LIST,
+  authentification.verify,
+  async (req, res, next) => {
+    const notes = await Note.findOne({ _id: _.get(req, 'params.sessionId', null) }).populate({ path: 'exercisesId' })
+    res.json({ notes })
+  })
+
 router.post(
   '/',
   validator.CREATE,

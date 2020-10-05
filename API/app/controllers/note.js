@@ -23,6 +23,15 @@ router.get(
     res.json({ notes })
   })
 
+router.get(
+  '/populate/:noteId',
+  validator.LIST,
+  authentification.verify,
+  async (req, res, next) => {
+    const notes = await Note.findOne({ _id: _.get(req, 'params.noteId', null) }).populate({ path: 'sessionId' })
+    res.json({ notes })
+  })
+
 router.post(
   '/',
   validator.CREATE,

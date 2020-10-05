@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "dev": "npm i && REACT_APP_ACK_URL=http://api.recordtraining.devel react-scripts start",
+    "dev": "npm i && REACT_APP_BACK_URL=http://api.record-workout.devel react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
