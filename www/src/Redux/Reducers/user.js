@@ -1,4 +1,4 @@
-import { SET_TOKEN } from '../constants/userTypes'
+import { SET_TOKEN, REMOVE_TOKEN } from '../constants/userTypes'
 
 const initialState = {
   token: null
@@ -7,11 +7,13 @@ const initialState = {
 const user = (state = initialState, action) => {
   switch (action.type) {
     case SET_TOKEN:
-      const tmp = {
+      return {
         token: action.value
       }
-      console.log('Redux set: ', tmp)
-      return tmp
+    case REMOVE_TOKEN:
+      return {
+        token: action.value
+      }
     default:
       return state
   }

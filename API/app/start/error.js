@@ -1,7 +1,8 @@
 'use strict'
 
-const boom = require('@hapi/boom')
+const Boom = require('@hapi/boom')
 const _ = require('lodash')
+const log = require('debug')('Error catcher')
 
 module.exports = (app) => {
   app.use((req, res, next) => {
@@ -9,7 +10,23 @@ module.exports = (app) => {
   })
 
   app.use((err, req, res, next) => {
-    const error = boom.boomify(err)
-    res.json(error)
+    if (!Boom.isBoom(err)) {
+      console.log('Not boom: ', err)
+      Boom.boomify(err, {
+        statusCode: err.statusCode || 500
+      })
+    }
+
+    log(err)
+
+    const statusCode = err.output.payload.statusCode
+    const errorName = err.output.payload.error
+    const message = err.output.payload.message
+
+    const errorResponse = { statusCode, error: errorName, message }
+    if (err.data) {
+      errorResponse.data = err.data
+    }
+    res.status(statusCode).json(errorResponse)
   })
 }

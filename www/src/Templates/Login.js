@@ -45,14 +45,13 @@ class Login extends React.Component {
 	}
 	
 	onSubmit = (values) => {
-		const { dispatch } = this.props
 		const { setToken } = this.props.actions
 		console.log('props: ', this.props)
 		axios.post(`${ process.env.REACT_APP_BACK_URL + this.state.pathname}`, {
 			..._.pick(values, ['email', 'password', 'pseudo'])
 		})
 		.then(response => {
-			console.log('response :', response.data)
+			console.log('response :', response)
 			if (_.get(response, 'data.isBoom', false)) {
 				this.setState({ error: _.get(response, 'data.output.payload.message', '') })
 			} else {

@@ -2,6 +2,7 @@
 
 const jwt = require('jsonwebtoken')
 const Promise = require('bluebird')
+const Boom = require('@hapi/boom')
 
 /**
  * Verification user's token with
@@ -18,7 +19,10 @@ const verify = (req, res, next) => {
     (err, decoded) => {
       console.log(err)
       console.log(decoded)
-      if (err) { next(err) }
+      if (err) { 
+        console.log(err)
+        next(Boom.unauthorized(err))
+      }
       req.decoded = decoded
       next()
     })
