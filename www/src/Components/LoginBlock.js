@@ -2,9 +2,9 @@ import React from 'react'
 import {Field, ErrorMessage} from 'formik'
 
 export default function LoginBlock(datas) {
-	const { value, type } = datas
+	const { value, type, extraClass } = datas
 	return (
-		<div className='loginBlock'>
+		<div className={`loginBlock ${extraClass}`}>
 			<div className='loginBlock__item'>
 				<label htmlFor={value} className='loginBlock__label'>
 					{value}

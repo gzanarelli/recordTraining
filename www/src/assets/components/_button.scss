@@ -4,6 +4,10 @@
 	background-color: $secondary;
 	border-radius: 50%;
 
+	&--red {
+		background-color: $sunset;
+	}
+
 	&__link {
 		height: 100%;
     display: flex;

@@ -16,15 +16,10 @@ class Login extends React.Component {
 		super(props)
 
 		this.state = {
-			pathname: '',
+			pathname: 'login',
 			error: ''
 		}
 	}
-
-	componentDidMount() {
-		this.setState({ pathname: _.get(this, 'props.location.pathname', null) })
-	}
-	
 	
 	validate = (values) => {
 		let errs = {}
@@ -47,14 +42,14 @@ class Login extends React.Component {
 	}
 	
 	onSubmit = (values) => {
-		const { setToken } = this.props.actions
-		console.log('props: ', this.props)
-		axios.post(`${ process.env.REACT_APP_BACK_URL + this.state.pathname}`, {
+		console.log('props: ', this.props.user)
+		axios.post(`${ process.env.REACT_APP_BACK_URL}/${this.state.pathname}`, {
 			..._.pick(values, ['email', 'password', 'pseudo'])
 		})
 		.then(response => {
 			console.log('response :', response.data.token)
 			if (_.get(response, 'data.isBoom', false)) {
+				console.log('error login')
 				this.setState({ error: _.get(response, 'data.output.payload.message', '') })
 			} else {
 				ls('token', _.get(response, 'data.token'))
@@ -62,19 +57,28 @@ class Login extends React.Component {
 			}
 		})
 		.catch(err => {
-			console.log(err)
+			toast.error(err)
+			console.log('error: ' + err)
 		})
 	}
 	
 	render() {
 		const { pathname, error } = this.state;
-		const route = pathname === '/signup' ? 'signup' : 'login'
-		if (this.state.error) {
-			toast.error(this.state.error)
+		if (error) {
+			toast.error(error)
 		}
 
 		return (
 			<div className="login">
+				<div className='login__select'>
+					<button className={`login__enter login__enter--inverse ${pathname === 'login' ? 'login__active' : ''}`} onClick={() => this.setState({ pathname: 'login'})}>
+						login
+					</button>
+					<button className={`login__enter ${pathname === 'signup' ? 'login__active' : ''}`} onClick={() => this.setState({ pathname: 'signup'})}>
+						sign-up
+					</button>
+				</div>
+
 				<Formik
 					initialValues={{ email: '', password: '', pseudo: '' }}
 					validate={this.validate}
@@ -84,11 +88,11 @@ class Login extends React.Component {
 					<LoginBlock value={'email'} type={'email'} />
 					<LoginBlock value={'password'} type={'password'} />
 					{
-						route === 'signup' ? (
-							<LoginBlock value={'pseudo'} type={'text'} />
-							) : ''
-						}
-					<button type="submit" className="login__submit">{ route }</button>
+						pathname === 'signup' ? (
+						<LoginBlock value={'pseudo'} type={'text'} />
+						) : ''
+					}
+					<button type="submit" className="login__submit">{ pathname }</button>
 				</Form>
 				</Formik>
 			</div>

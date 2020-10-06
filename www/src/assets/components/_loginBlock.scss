@@ -1,8 +1,16 @@
 .loginBlock {
 	max-width: 500px;
 	width: 100%;
-	
-	
+	transition: ease 500ms;
+	transform: translateY(0px);
+	opacity: 1;
+
+	&--non-active {
+		transform: translateY(-100%);
+		opacity: 0;
+		visibility: hidden;
+	}
+
 	& + & {
 		margin-top: 30px;
 	}
