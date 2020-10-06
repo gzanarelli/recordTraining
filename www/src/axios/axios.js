@@ -1,9 +1,6 @@
 import axios from 'axios'
-import configStore from '../Redux/configStore'
 import _ from 'lodash'
-import errors from '../utils/errors'
-
-const { store } = configStore()
+import ls from 'local-storage'
 
 const instance = axios.create({
   crossdomain: true
@@ -13,27 +10,28 @@ instance.interceptors.request.use(function (config) {
   /**
    * Set verification and throw error
    */
-  config.headers.token = store.getState().user.token
+  config.headers.token = ls('token')
   return config
 }, function (err) {
   console.log(err)
   return err
 })
 
-instance.interceptors.response.use(function(response) {
+instance.interceptors.response.use(function (response) {
   console.log('Response: ', response)
   return response
-}, function(error) {
-  console.log(localStorage)
-	if (_.get(error, 'response.status') === 401) {
-    localStorage.removeItem('persist:record_redux')
+}, function (error) {
+  if (_.get(error, 'response.status') === 401) {
+    // localStorage.removeItem('persist:record_redux')
+    ls('token')
     window.location.reload()
   } else if (_.get(error, 'response.status') < 500) {
-    console.log('other error')
+    window.location.reload()
   } else {
-    localStorage.removeItem('persist:record_redux')
+    ls('token')
+    window.location.reload()
   }
-	return null
+  return error
 })
 
 export default instance

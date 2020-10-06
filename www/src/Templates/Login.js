@@ -7,6 +7,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as UserActions from '../Redux/actions/user'
 import {toast} from 'react-toastify'
+import ls from 'local-storage'
+
 import LoginBlock from '../Components/LoginBlock'
 
 class Login extends React.Component {
@@ -51,12 +53,11 @@ class Login extends React.Component {
 			..._.pick(values, ['email', 'password', 'pseudo'])
 		})
 		.then(response => {
-			console.log('response :', response)
+			console.log('response :', response.data.token)
 			if (_.get(response, 'data.isBoom', false)) {
 				this.setState({ error: _.get(response, 'data.output.payload.message', '') })
 			} else {
-				setToken(_.get(response, 'data.token'))
-				console.log(this.props)
+				ls('token', _.get(response, 'data.token'))
 				this.props.history.push('/')
 			}
 		})

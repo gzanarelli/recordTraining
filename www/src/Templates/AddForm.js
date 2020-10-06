@@ -61,7 +61,6 @@ class AddForm extends React.Component {
 	}
 	
 	onSubmit = (values) => {
-		console.log('Token ad form: ', this.props)
 		const { infosForm } = this.state
 		axios.post(`${ process.env.REACT_APP_BACK_URL + infosForm.post}`, values)
 		.then(response => {
