@@ -7,12 +7,15 @@ export default function Card (datas) {
     console.log('Error not datas')
     return null
   }
-  console.log(datas)
+  console.log('Card: ', datas)
   return (
     <div className='card'>
-      <Link to={datas.url + datas.datas._id} className='card__link'>
+      <Link to={datas.url + datas.datas._id} noteId={ datas.datas._id } className='card__link'>
         <div className='card__content'>
           <h2 className='card__title'> {_.get(datas, 'datas.label')}</h2>
+          <p>
+             Number {_.get(datas, 'name', )}: {_.get(datas, 'datas.sessionId', []).length}
+          </p>
         </div>
       </Link>
     </div>

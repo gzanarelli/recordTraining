@@ -21,6 +21,9 @@ class Login extends React.Component {
 		}
 	}
 	
+	/**
+	 * Validator values
+	 */
 	validate = (values) => {
 		let errs = {}
 		
@@ -34,13 +37,16 @@ class Login extends React.Component {
 			errs.password = 'Password is required'
 		}
 		
-		if (!values.pseudo && this.state.pathname === '/signup' ) {
+		if (!values.pseudo && this.state.pathname === 'signup' ) {
 			errs.pseudo = 'Pseudo is required'
 		}
 		
 		return errs
 	}
 	
+	/**
+	 * Submit values
+	 */
 	onSubmit = (values) => {
 		axios.post(`${ process.env.REACT_APP_BACK_URL}/${this.state.pathname}`, {
 			..._.pick(values, ['email', 'password', 'pseudo'])
@@ -54,7 +60,7 @@ class Login extends React.Component {
 			}
 		})
 		.catch(err => {
-			console.error(err)
+			console.error('error: ', err)
 		})
 	}
 	
@@ -63,7 +69,7 @@ class Login extends React.Component {
 		if (error) {
 			toast.error(error)
 		}
-
+		console.log('render again')
 		return (
 			<div className="login">
 
@@ -80,24 +86,32 @@ class Login extends React.Component {
 				</div>
 
 				<Formik
-					initialValues={{ email: '', password: '', pseudo: '' }}
+					initialValues={{email: '', password: '', pseudo: ''}}
 					validate={this.validate}
 					onSubmit={this.onSubmit}
 				>
+						<Form className="login__form">
+	
+							<LoginBlock 
+								value={'email'}
+								type={'email'}
+								/>
+							<LoginBlock
+								value={'password'}
+								type={'password'}
+								/>
+							{
+								pathname === 'signup' ? (
+									<LoginBlock
+									value={'pseudo'}
+									type={'text'}
+									/>
+									) : ''
+							}
 
-					<Form className="login__form">
+							<button type="submit" className="login__submit">{ pathname }</button>
 
-						<LoginBlock value={'email'} type={'email'} />
-						<LoginBlock value={'password'} type={'password'} />
-						{
-							pathname === 'signup' ? (
-							<LoginBlock value={'pseudo'} type={'text'} />
-							) : ''
-						}
-
-						<button type="submit" className="login__submit">{ pathname }</button>
-
-					</Form>
+						</Form>
 
 				</Formik>
 			</div>

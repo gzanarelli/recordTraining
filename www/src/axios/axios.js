@@ -22,6 +22,7 @@ instance.interceptors.response.use(function (response) {
   console.log('Response: ', response)
   return response
 }, function (error) {
+  console.log('Error catch: ', error.response)
   if (error.response) {
     // Request made and server responded
     ls.remove('token')

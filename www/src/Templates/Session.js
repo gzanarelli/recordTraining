@@ -25,17 +25,19 @@ class Session extends React.Component {
 
   render () {
     const { sessions } = this.state
-    console.log('Session: ', sessions)
+    console.log('Session: ', this.props.location.pathname)
+    const noteId = this.props.location.pathname.split('/').pop()
+    console.log(noteId)
     return (
       <div className='home'>
         {_.map(sessions, (session, index) => {
           return (
-            <Card key={index} datas={session} url='/session/populate/' />
+            <Card key={index} datas={session} url='/session/populate/' name='exercises' type='session' />
           )
         })}
         <div className='home__item'>
           <div className='home__add'>
-            <Button />
+            <Button link={'/session/add/' + noteId}/>
           </div>
         </div>
       </div>

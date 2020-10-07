@@ -29,12 +29,12 @@ class Home extends React.Component {
       <div className='home'>
         {_.map(notes, (note, index) => {
           return (
-            <Card key={index} datas={note} url='/note/populate/' />
+            <Card key={index} datas={note} url='/note/populate/' name='sessions' type='note' />
           )
         })}
         <div className='home__item'>
           <div className='home__add'>
-            <Button />
+            <Button link='/note/add' />
           </div>
         </div>
       </div>

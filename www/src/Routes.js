@@ -8,22 +8,24 @@ import ls from 'local-storage'
 import Login from './Templates/Login'
 import Home from './Templates/Home'
 import Session from './Templates/Session'
-import AddForm from './Templates/AddForm'
+import NoteForm from './Templates/NoteForm'
+import SessionForm from './Templates/SessionForm'
 import Nav from './Components/Nav'
 
 const Token = ({ component: Component, ...remainder }) => {
-  const token = ls('token')
+  const token = ls.get('token')
+  console.log('remainder: ', remainder)
   return (
     <Route
       {...remainder}
-      render={(props) => token
+      render={(props) => token !== 'undefined' && token
         ? <Component {...props} />
         : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />}
     />
   )
 }
 
-const AnimatedSwitch = withRouter(({ location }) => {
+const AnimatedSwitch = withRouter(({ location, datas }) => {
   return (
     <TransitionGroup>
       <CSSTransition
@@ -39,7 +41,8 @@ const AnimatedSwitch = withRouter(({ location }) => {
             <Login />
           </Route>
           <Token exact path='/' component={Home} />
-          <Token exact path='/note/add' component={AddForm} />
+          <Token exact path='/note/add' component={NoteForm} />
+          <Token exact path='/session/add/:noteId' component={SessionForm} />
           <Token exact path='/note/populate/:noteId' component={Session} />
         </Switch>
       </CSSTransition>
