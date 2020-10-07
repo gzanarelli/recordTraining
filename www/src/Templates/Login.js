@@ -42,14 +42,11 @@ class Login extends React.Component {
 	}
 	
 	onSubmit = (values) => {
-		console.log('props: ', this.props.user)
 		axios.post(`${ process.env.REACT_APP_BACK_URL}/${this.state.pathname}`, {
 			..._.pick(values, ['email', 'password', 'pseudo'])
 		})
 		.then(response => {
-			console.log('response :', response.data.token)
 			if (_.get(response, 'data.isBoom', false)) {
-				console.log('error login')
 				this.setState({ error: _.get(response, 'data.output.payload.message', '') })
 			} else {
 				ls('token', _.get(response, 'data.token'))
@@ -57,8 +54,7 @@ class Login extends React.Component {
 			}
 		})
 		.catch(err => {
-			toast.error(err)
-			console.log('error: ' + err)
+			console.error(err)
 		})
 	}
 	
@@ -70,13 +66,17 @@ class Login extends React.Component {
 
 		return (
 			<div className="login">
+
 				<div className='login__select'>
+
 					<button className={`login__enter login__enter--inverse ${pathname === 'login' ? 'login__active' : ''}`} onClick={() => this.setState({ pathname: 'login'})}>
-						login
+						Login
 					</button>
+
 					<button className={`login__enter ${pathname === 'signup' ? 'login__active' : ''}`} onClick={() => this.setState({ pathname: 'signup'})}>
-						sign-up
+						Sign-up
 					</button>
+
 				</div>
 
 				<Formik
@@ -84,16 +84,21 @@ class Login extends React.Component {
 					validate={this.validate}
 					onSubmit={this.onSubmit}
 				>
-				<Form className="login__form">
-					<LoginBlock value={'email'} type={'email'} />
-					<LoginBlock value={'password'} type={'password'} />
-					{
-						pathname === 'signup' ? (
-						<LoginBlock value={'pseudo'} type={'text'} />
-						) : ''
-					}
-					<button type="submit" className="login__submit">{ pathname }</button>
-				</Form>
+
+					<Form className="login__form">
+
+						<LoginBlock value={'email'} type={'email'} />
+						<LoginBlock value={'password'} type={'password'} />
+						{
+							pathname === 'signup' ? (
+							<LoginBlock value={'pseudo'} type={'text'} />
+							) : ''
+						}
+
+						<button type="submit" className="login__submit">{ pathname }</button>
+
+					</Form>
+
 				</Formik>
 			</div>
 		)

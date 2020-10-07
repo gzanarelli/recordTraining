@@ -4,8 +4,8 @@
 	background-color: $secondary;
 	border-radius: 50%;
 
-	&--red {
-		background-color: $sunset;
+	&--dark {
+		background-color: $dark-80;
 	}
 
 	&__link {
@@ -15,6 +15,6 @@
     align-items: center;
     border-radius: 50%;
 		font-size: 200%;
-		color: $dark;
+		color: $dark-sec;
 	}
 }

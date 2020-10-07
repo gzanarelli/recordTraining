@@ -28,7 +28,7 @@ const AnimatedSwitch = withRouter(({ location }) => {
     <TransitionGroup>
       <CSSTransition
         key={location.key}
-        timeout={5000}
+        timeout={1000}
         classNames='page'
       >
         <Switch location={location}>

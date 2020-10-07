@@ -1,6 +1,5 @@
 .nav {
   position: sticky;
-  display: flex;
   top: 0;
   height: 120px;
   justify-content: space-between;
@@ -9,7 +8,14 @@
   box-shadow: 0 10px 5px 0 rgba(0,0,0,0.75);
   border-radius: 0 0 5px 5px;
   margin-bottom: 30px;
+  padding: 20px;
   
+  &__bloc {
+    display: flex;
+    height: 60px;
+    overflow: hidden;
+  }
+
   &__profil {
     transform: translateY(10px);
     margin: 0 20px;
@@ -18,15 +24,25 @@
   }
 
   &__logout {
-    width: 50px;
-    height: 50px;
-    margin: 10px 10px;
-    box-shadow: 0px 0px 5px 0px rgba(255,95,87,1);
+    width: 35px;
+    height: 35px;
+    box-shadow: 0 0px 5px 0 rgba(0,0,0,0.75);
     border-radius: 50%;
     transition: box-shadow ease 300ms;
 
     &:active {
       box-shadow: none;
     }
+  }
+
+  &__go-back {
+    width: 30px;
+    height: 20px;
+    border-radius: 5px;
+    background-color: $dark-80;
+    box-shadow: 0 0px 5px 0 rgba(0,0,0,0.75);
+    font-size: 140%;
+    text-align: center;
+    color: $dark-sec;
   }
 }

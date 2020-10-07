@@ -1,6 +1,7 @@
 import axios from 'axios'
 import _ from 'lodash'
 import ls from 'local-storage'
+import { toast } from 'react-toastify'
 
 const instance = axios.create({
   crossdomain: true
@@ -21,15 +22,14 @@ instance.interceptors.response.use(function (response) {
   console.log('Response: ', response)
   return response
 }, function (error) {
-  if (_.get(error, 'response.status') === 401) {
-    // localStorage.removeItem('persist:record_redux')
-    ls('token')
-    window.location.reload()
-  } else if (_.get(error, 'response.status') < 500) {
-    window.location.reload()
+  if (error.response) {
+    // Request made and server responded
+    ls.remove('token')
+    toast.error(_.get(error, 'response.data.message', 'Something went wrong.'))
   } else {
-    ls('token')
-    window.location.reload()
+    // Something happened in setting up the request that triggered an Error
+    ls.remove('token')
+    toast.error(_.get(error, 'message', 'Something went wrong.'))
   }
   return error
 })
