@@ -56,6 +56,7 @@ router.post(
           return next(Boom.conflict('Account already exist.'))
         } else {
           bcrypt.hash(password, roundSalt, (err, hash) => {
+            if (err) { next(err) }
             new User({
               password: hash,
               email,

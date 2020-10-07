@@ -18,7 +18,6 @@ module.exports = (app) => {
     }
 
     log(err)
-    console.log(err)
     const statusCode = err.output.payload.statusCode
     const errorName = err.output.payload.error
     const message = err.output.payload.message
@@ -27,7 +26,7 @@ module.exports = (app) => {
     if (err.data) {
       errorResponse.data = err.data
     }
-    console.log('errorResponse: ', errorResponse)
-    res.status(statusCode).json(errorResponse)
+    res.status(statusCode)
+    res.json(errorResponse)
   })
 }
