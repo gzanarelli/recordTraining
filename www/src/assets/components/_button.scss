@@ -4,6 +4,10 @@
 	background-color: $secondary;
 	border-radius: 50%;
 
+	&:focus {
+		outline: 0;
+	}
+	
 	&--dark {
 		background-color: $dark-80;
 	}

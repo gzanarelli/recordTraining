@@ -6,7 +6,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import _ from 'lodash'
 import ls from 'local-storage'
 import Login from './Templates/Login'
-import Home from './Templates/Home'
+import Note from './Templates/Note'
 import Session from './Templates/Session'
 import NoteForm from './Templates/NoteForm'
 import SessionForm from './Templates/SessionForm'
@@ -16,7 +16,6 @@ import Exercise from './Templates/Exercise'
 
 const Token = ({ component: Component, ...remainder }) => {
   const token = ls.get('token')
-  console.log('remainder: ', remainder)
   return (
     <Route
       {...remainder}
@@ -42,12 +41,12 @@ const AnimatedSwitch = withRouter(({ location, datas }) => {
       <Route exact path='/signup'>
         <Login />
       </Route>
-      <Token exact path='/' component={Home} />
+      <Token exact path='/note' component={Note} />
       <Token exact path='/note/add' component={NoteForm} />
       <Token exact path='/session/add/:noteId' component={SessionForm} />
-      <Token exact path='/note/populate/:noteId' component={Session} />
+      <Token exact path='/session/:noteId' component={Session} />
       <Token exact path='/exercise/add/:sessionId' component={ExerciseForm} />
-      <Token exact path='/session/populate/:sessionId' component={Exercise} />
+      <Token exact path='/exercise/:sessionId' component={Exercise} />
     </Switch>
     //   </CSSTransition>
     // </TransitionGroup>
@@ -56,7 +55,6 @@ const AnimatedSwitch = withRouter(({ location, datas }) => {
 
 class Routes extends React.Component {
   render () {
-    console.log('Props route: ', this.props.user)
     return (
       <Router>
         <Nav />

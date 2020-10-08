@@ -16,24 +16,20 @@ class Session extends React.Component {
   }
 
   componentDidMount () {
-    console.log(this.props.location.pathname)
-    axios.get(process.env.REACT_APP_BACK_URL + this.props.location.pathname)
+    axios.get(process.env.REACT_APP_BACK_URL + '/note/populate/' + this.props.match.params.noteId)
       .then(datas => {
-        console.log(datas)
         this.setState({ sessions: _.get(datas, 'data.notes.sessionId', []) })
       })
   }
 
   render () {
     const { sessions } = this.state
-    console.log('Session: ', this.props.location.pathname)
     const noteId = this.props.location.pathname.split('/').pop()
-    console.log(noteId)
     return (
       <div className='home'>
         {_.map(sessions, (session, index) => {
           return (
-            <Card key={index} datas={session} url='/session/populate/' name='exercises' type='session' />
+            <Card key={index} datas={session} url='/exercise/' name='exercises' type='session' />
           )
         })}
         <div className='home__item'>

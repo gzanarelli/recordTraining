@@ -6,7 +6,7 @@ export default function Logout () {
   return (
     <div className='button button--dark'>
       <Link onClick={() => ls.clear()} to='/login' className='button__link'>
-        <i class='fas fa-power-off' />
+        <i className='fas fa-power-off' />
       </Link>
     </div>
   )

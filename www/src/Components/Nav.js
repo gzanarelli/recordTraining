@@ -3,7 +3,8 @@ import { withRouter, Link } from 'react-router-dom'
 
 import Logout from './Logout'
 
-export const Nav = withRouter(({ location, state }) => {
+export const Nav = withRouter(({ location, history, state }) => {
+  console.log('Go back', history)
   if (location.pathname === '/login' || location.pathname === '/signup') {
     return ''
   }
@@ -17,9 +18,9 @@ export const Nav = withRouter(({ location, state }) => {
       </div>
 
       <div className='nav__bloc'>
-        <Link to='/' className='nav__go-back'>
-          <i class='fas fa-arrow-left nav__go-back__link' />
-        </Link>
+        <button onClick={() => history.goBack()} className='nav__go-back'>
+          <i className='fas fa-arrow-left nav__go-back__link' />
+        </button>
       </div>
 
     </div>

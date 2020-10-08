@@ -20,6 +20,10 @@ class Login extends React.Component {
 			error: ''
 		}
 	}
+
+	componentDidMount() {
+		ls.remove('token')
+	}
 	
 	/**
 	 * Validator values
@@ -56,11 +60,11 @@ class Login extends React.Component {
 				this.setState({ error: _.get(response, 'data.output.payload.message', '') })
 			} else {
 				ls('token', _.get(response, 'data.token'))
-				this.props.history.push('/')
+				this.props.history.push('/note')
 			}
 		})
 		.catch(err => {
-			console.error('error: ', err)
+			return err
 		})
 	}
 	
@@ -69,7 +73,6 @@ class Login extends React.Component {
 		if (error) {
 			toast.error(error)
 		}
-		console.log('render again')
 		return (
 			<div className="login">
 

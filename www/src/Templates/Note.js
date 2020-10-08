@@ -16,10 +16,9 @@ class Home extends React.Component {
   }
 
   componentDidMount () {
-    console.log(process.env.REACT_APP_BACK_URL)
     axios.get(`${process.env.REACT_APP_BACK_URL}/note`)
       .then(datas => {
-        this.setState({ notes: datas.data.notes })
+        this.setState({ notes: _.get(datas, 'data.notes') })
       })
   }
 
@@ -29,7 +28,7 @@ class Home extends React.Component {
       <div className='home'>
         {_.map(notes, (note, index) => {
           return (
-            <Card key={index} datas={note} url='/note/populate/' name='sessions' type='note' />
+            <Card key={index} datas={note} url='/session/' name='sessions' type='note' />
           )
         })}
         <div className='home__item'>

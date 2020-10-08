@@ -4,10 +4,8 @@ import { Link } from 'react-router-dom'
 
 export default function Card (datas) {
   if (!datas) {
-    console.log('Error not datas')
     return null
   }
-  console.log('Card: ', datas)
   return (
     <div className='card'>
       <Link to={datas.url + datas.datas._id} className='card__link'>
