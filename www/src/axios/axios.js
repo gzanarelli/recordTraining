@@ -25,7 +25,9 @@ instance.interceptors.response.use(function (response) {
   console.log('Error catch: ', error.response)
   if (error.response) {
     // Request made and server responded
-    ls.remove('token')
+    if (_.get(error, 'response.status') === 401) {
+      ls.remove('token')
+    }
     toast.error(_.get(error, 'response.data.message', 'Something went wrong.'))
   } else {
     // Something happened in setting up the request that triggered an Error

@@ -3,6 +3,7 @@
 const validator = require('../validators/notes')
 const router = require('express').Router()
 const authentification = require('../libs/authentificationJwt')
+const validationErrorsResponses = require('../libs/validationResponses')
 const _ = require('lodash')
 const mongoose = require('mongoose')
 const Note = mongoose.model('notes')
@@ -17,6 +18,7 @@ module.exports = (app) => {
 router.get(
   '/',
   validator.LIST,
+  validationErrorsResponses,
   authentification.verify,
   async (req, res, next) => {
     const notes = await Note.find({ })
@@ -26,6 +28,7 @@ router.get(
 router.get(
   '/populate/:noteId',
   validator.LIST,
+  validationErrorsResponses,
   authentification.verify,
   async (req, res, next) => {
     const notes = await Note.findOne({ _id: _.get(req, 'params.noteId', null) }).populate({ path: 'sessionId' })
@@ -35,6 +38,7 @@ router.get(
 router.post(
   '/',
   validator.CREATE,
+  validationErrorsResponses,
   authentification.verify,
   (req, res, next) => {
     console.log(req.body)
@@ -53,6 +57,7 @@ router.post(
 router.get(
   '/:noteId',
   validator.READ,
+  validationErrorsResponses,
   authentification.verify,
   (req, res, next) => {
     Note.findOne({ _id: _.get(req, 'params.noteId', null) })
@@ -63,6 +68,7 @@ router.get(
 router.put(
   '/:noteId',
   validator.UPDATE,
+  validationErrorsResponses,
   authentification.verify,
   (req, res, next) => {
     Note.updateOne({
@@ -79,6 +85,7 @@ router.put(
 router.delete(
   '/:noteId',
   validator.DELETE,
+  validationErrorsResponses,
   authentification.verify,
   async (req, res, next) => {
     const note = await Note.findOne({ _id: _.get(req, 'params.noteId', null) })

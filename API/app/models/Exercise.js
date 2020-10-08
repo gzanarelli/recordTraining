@@ -22,8 +22,8 @@ const exerciseSchema = new mongoose.Schema({
     default: 12 // kg
   },
   timeOut: {
-    type: Number,
-    default: 90 // minutes
+    type: String,
+    default: '1' // minutes
   },
   createAt: {
     type: Date,

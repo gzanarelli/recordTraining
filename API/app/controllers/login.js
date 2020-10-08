@@ -4,6 +4,7 @@ const validator = require('../validators/login')
 const router = require('express').Router()
 const authentification = require('../libs/authentificationJwt')
 const _ = require('lodash')
+const validationErrorsResponses = require('../libs/validationResponses')
 const mongoose = require('mongoose')
 const User = mongoose.model('users')
 const Boom = require('boom')
@@ -18,6 +19,7 @@ module.exports = (app) => {
 router.post(
   '/login',
   validator.LOGIN,
+  validationErrorsResponses,
   (req, res, next) => {
     const { email, password } = req.body
     console.log(email, password)
@@ -48,6 +50,7 @@ router.post(
 router.post(
   '/signup',
   validator.SIGNUP,
+  validationErrorsResponses,
   (req, res, next) => {
     const { email, password, pseudo } = req.body
     User.findOne({ email })

@@ -21,9 +21,9 @@ class SessionForm extends React.Component {
 	
 	onSubmit = (values) => {
 		console.log(values)
-		axios.post(`${ process.env.REACT_APP_BACK_URL}/session`, {...values, noteId: _.get(this, 'props.match.params.noteId')})
+		axios.post(`${ process.env.REACT_APP_BACK_URL}/exercise`, {...values, sessionId: _.get(this, 'props.match.params.sessionId')})
 		.then(response => {
-			this.props.history.push('/note/populate/' + _.get(this, 'props.match.params.noteId'))
+			this.props.history.push('/session/populate/' + _.get(this, 'props.match.params.sessionId'))
 		})
 		.catch(err => {
 			console.log(err)
@@ -31,16 +31,21 @@ class SessionForm extends React.Component {
 	}
 
 	render() {
-		return (
+    console.log('Exercice form: ', this.props.match.params)
+    return (
 			<div className="login">
-				<h1>Ajouter une session</h1>
+				<h1>Ajouter un exercice</h1>
 				<Formik
-					initialValues={{label: ''}}
+					initialValues={{label: '', value: '', numberSessions: 1, numberRepetitions: 1, weight: 0, timeOut: ''}}
 					validate={this.validate}
 					onSubmit={this.onSubmit}
 					>
 					<Form className="login__form">
 						<Block key='label' type='text' value='label' />
+						<Block key='numberSessions' type='number' value='numberSessions' />
+						<Block key='numberRepetitions' type='number' value='numberRepetitions' />
+						<Block key='weight' type='number' value='weight' />
+						<Block key='timeOut' type='text' value='timeOut' />
 						<button type="submit" className="login__submit">Submit</button>
 					</Form>
 				</Formik>

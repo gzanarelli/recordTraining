@@ -11,6 +11,8 @@ import Session from './Templates/Session'
 import NoteForm from './Templates/NoteForm'
 import SessionForm from './Templates/SessionForm'
 import Nav from './Components/Nav'
+import ExerciseForm from './Templates/ExerciseForm'
+import Exercise from './Templates/Exercise'
 
 const Token = ({ component: Component, ...remainder }) => {
   const token = ls.get('token')
@@ -27,26 +29,28 @@ const Token = ({ component: Component, ...remainder }) => {
 
 const AnimatedSwitch = withRouter(({ location, datas }) => {
   return (
-    <TransitionGroup>
-      <CSSTransition
-        key={location.key}
-        timeout={1000}
-        classNames='page'
-      >
-        <Switch location={location}>
-          <Route exact path='/login'>
-            <Login />
-          </Route>
-          <Route exact path='/signup'>
-            <Login />
-          </Route>
-          <Token exact path='/' component={Home} />
-          <Token exact path='/note/add' component={NoteForm} />
-          <Token exact path='/session/add/:noteId' component={SessionForm} />
-          <Token exact path='/note/populate/:noteId' component={Session} />
-        </Switch>
-      </CSSTransition>
-    </TransitionGroup>
+    // <TransitionGroup>
+    //   <CSSTransition
+    //     key={location.key}
+    //     timeout={1000}
+    //     classNames='page'
+    //   >
+    <Switch location={location}>
+      <Route exact path='/login'>
+        <Login />
+      </Route>
+      <Route exact path='/signup'>
+        <Login />
+      </Route>
+      <Token exact path='/' component={Home} />
+      <Token exact path='/note/add' component={NoteForm} />
+      <Token exact path='/session/add/:noteId' component={SessionForm} />
+      <Token exact path='/note/populate/:noteId' component={Session} />
+      <Token exact path='/exercise/add/:sessionId' component={ExerciseForm} />
+      <Token exact path='/session/populate/:sessionId' component={Exercise} />
+    </Switch>
+    //   </CSSTransition>
+    // </TransitionGroup>
   )
 })
 

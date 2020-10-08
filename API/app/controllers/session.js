@@ -3,6 +3,7 @@
 const validator = require('../validators/sessions')
 const router = require('express').Router()
 const authentification = require('../libs/authentificationJwt')
+const validationErrorsResponses = require('../libs/validationResponses')
 const _ = require('lodash')
 const mongoose = require('mongoose')
 const Session = mongoose.model('sessions')
@@ -21,6 +22,7 @@ module.exports = (app) => {
 router.get(
   '/',
   validator.LIST,
+  validationErrorsResponses,
   authentification.verify,
   async (req, res, next) => {
     const sessions = await Session.find({ })
@@ -30,6 +32,7 @@ router.get(
 router.get(
   '/',
   validator.LIST,
+  validationErrorsResponses,
   authentification.verify,
   async (req, res, next) => {
     const sessions = await Session.find({ })
@@ -39,15 +42,18 @@ router.get(
 router.get(
   '/populate/:sessionId',
   validator.LIST,
+  validationErrorsResponses,
   authentification.verify,
   async (req, res, next) => {
-    const notes = await Note.findOne({ _id: _.get(req, 'params.sessionId', null) }).populate({ path: 'exercisesId' })
-    res.json({ notes })
+    console.log('coucocu on est bien passé dans le populate session')
+    const sessions = await Session.findOne({ _id: _.get(req, 'params.sessionId', null) }).populate({ path: 'exercisesId' })
+    res.json({ sessions })
   })
 
 router.post(
   '/',
   validator.CREATE,
+  validationErrorsResponses,
   authentification.verify,
   (req, res, next) => {
     const ID = mongoose.Types.ObjectId()
@@ -70,6 +76,7 @@ router.post(
 router.get(
   '/:sessionId',
   validator.READ,
+  validationErrorsResponses,
   authentification.verify,
   (req, res, next) => {
     Session.findOne({ _id: _.get(req, 'params.sessionId', null) })
@@ -80,6 +87,7 @@ router.get(
 router.put(
   '/:sessionId',
   validator.UPDATE,
+  validationErrorsResponses,
   authentification.verify,
   (req, res, next) => {
     Session.updateOne({
@@ -96,6 +104,7 @@ router.put(
 router.delete(
   '/:sessionId',
   validator.DELETE,
+  validationErrorsResponses,
   authentification.verify,
   (req, res, next) => {
     Session.findOne({ _id: _.get(req, 'params.sessionId', null) })
