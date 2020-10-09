@@ -4,7 +4,6 @@ import { withRouter, Link } from 'react-router-dom'
 import Logout from './Logout'
 
 export const Nav = withRouter(({ location, history, state }) => {
-  console.log('Go back', history)
   if (location.pathname === '/login' || location.pathname === '/signup') {
     return ''
   }

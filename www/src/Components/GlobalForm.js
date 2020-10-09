@@ -32,7 +32,7 @@ export default function GlobalForm (props) {
   }
 
   const onSubmit = (values) => {
-    axios[props.verb](`${process.env.REACT_APP_BACK_URL}/${props.url}`, values)
+    axios[props.verb](props.url, values)
       .then(() => {
         props.history.goBack()
       })

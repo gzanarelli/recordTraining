@@ -4,6 +4,7 @@ import ls from 'local-storage'
 import { toast } from 'react-toastify'
 
 const instance = axios.create({
+  baseURL: process.env.REACT_APP_BACK_URL,
   crossdomain: true
 })
 

@@ -16,9 +16,9 @@ class Exercise extends React.Component {
   }
 
   componentDidMount () {
-    axios.get(process.env.REACT_APP_BACK_URL + '/session/populate/' + this.props.match.params.sessionId)
+    axios.get('session/' + this.props.match.params.sessionId + '?populate=exercisesId')
       .then(datas => {
-        this.setState({ exercises: _.get(datas, 'data.sessions.exercisesId', []) })
+        this.setState({ exercises: _.get(datas, 'data.exercisesId', []) })
       })
   }
 

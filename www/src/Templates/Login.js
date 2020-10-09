@@ -52,7 +52,7 @@ class Login extends React.Component {
 	 * Submit values
 	 */
 	onSubmit = (values) => {
-		axios.post(`${ process.env.REACT_APP_BACK_URL}/${this.state.pathname}`, {
+		axios.post(this.state.pathname, {
 			..._.pick(values, ['email', 'password', 'pseudo'])
 		})
 		.then(response => {

@@ -16,9 +16,9 @@ class Session extends React.Component {
   }
 
   componentDidMount () {
-    axios.get(process.env.REACT_APP_BACK_URL + '/note/populate/' + this.props.match.params.noteId)
+    axios.get('note/' + this.props.match.params.noteId + '?populate=sessionId')
       .then(datas => {
-        this.setState({ sessions: _.get(datas, 'data.notes.sessionId', []) })
+        this.setState({ sessions: _.get(datas, 'data.sessionId', []) })
       })
   }
 

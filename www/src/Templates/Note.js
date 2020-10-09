@@ -16,7 +16,7 @@ class Home extends React.Component {
   }
 
   componentDidMount () {
-    axios.get(`${process.env.REACT_APP_BACK_URL}/note`)
+    axios.get('note')
       .then(datas => {
         this.setState({ notes: _.get(datas, 'data.notes') })
       })
