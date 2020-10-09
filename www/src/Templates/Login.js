@@ -76,25 +76,31 @@ class Login extends React.Component {
 		return (
 			<div className="login">
 
-				<div className='login__select'>
-
-					<button className={`login__enter login__enter--inverse ${pathname === 'login' ? 'login__active' : ''}`} onClick={() => this.setState({ pathname: 'login'})}>
-						Login
-					</button>
-
-					<button className={`login__enter ${pathname === 'signup' ? 'login__active' : ''}`} onClick={() => this.setState({ pathname: 'signup'})}>
-						Sign-up
-					</button>
-
-				</div>
 
 				<Formik
 					initialValues={{email: '', password: '', pseudo: ''}}
 					validate={this.validate}
 					onSubmit={this.onSubmit}
 				>
+					{({isSubmitting, resetForm}) => (
 						<Form className="login__form">
-	
+							<div className='login__select'>
+
+								<button className={`login__enter login__enter--inverse ${pathname === 'login' ? 'login__active' : ''}`} onClick={() => {
+									this.setState({ pathname: 'login' })
+									resetForm()
+								}}>
+									Login
+								</button>
+
+								<button className={`login__enter ${pathname === 'signup' ? 'login__active' : ''}`} onClick={() => {
+									this.setState({ pathname: 'signup'})
+									resetForm()
+								}}>
+									Sign-up
+								</button>
+
+							</div>
 							<LoginBlock 
 								value={'email'}
 								type={'email'}
@@ -112,9 +118,16 @@ class Login extends React.Component {
 									) : ''
 							}
 
-							<button type="submit" className="login__submit">{ pathname }</button>
+							{
+								!isSubmitting ? (
+									<button type="submit" className="login__submit">{ pathname }</button>
+								) : (
+									'Loading'
+								)
+							}
 
 						</Form>
+					)}
 
 				</Formik>
 			</div>
