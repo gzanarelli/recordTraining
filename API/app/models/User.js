@@ -1,6 +1,7 @@
 'use strict'
 
 const mongoose = require('mongoose')
+const mongoosePopulate = require('../libs/mongoosePopulate')
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -26,5 +27,7 @@ const userSchema = new mongoose.Schema({
     default: Date.now()
   }
 })
+
+userSchema.plugin(mongoosePopulate)
 
 mongoose.model('users', userSchema)

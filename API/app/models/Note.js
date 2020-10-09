@@ -1,7 +1,7 @@
 'use strict'
 
 const mongoose = require('mongoose')
-
+const mongoosePopulate = require('../libs/mongoosePopulate')
 const noteSchema = new mongoose.Schema({
   label: {
     type: String
@@ -19,5 +19,7 @@ const noteSchema = new mongoose.Schema({
     default: Date.now()
   }
 })
+
+noteSchema.plugin(mongoosePopulate)
 
 mongoose.model('notes', noteSchema)

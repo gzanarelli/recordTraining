@@ -1,6 +1,7 @@
 'use strict'
 
 const mongoose = require('mongoose')
+const mongoosePopulate = require('../libs/mongoosePopulate')
 
 const exerciseSchema = new mongoose.Schema({
   value: {
@@ -30,5 +31,7 @@ const exerciseSchema = new mongoose.Schema({
     default: Date.now()
   }
 })
+
+exerciseSchema.plugin(mongoosePopulate)
 
 mongoose.model('exercises', exerciseSchema)

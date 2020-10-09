@@ -1,6 +1,7 @@
 'use strict'
 
 const mongoose = require('mongoose')
+const mongoosePopulate = require('../libs/mongoosePopulate')
 
 const sessionSchema = new mongoose.Schema({
   label: {
@@ -19,5 +20,7 @@ const sessionSchema = new mongoose.Schema({
     default: Date.now()
   }
 })
+
+sessionSchema.plugin(mongoosePopulate)
 
 mongoose.model('sessions', sessionSchema)

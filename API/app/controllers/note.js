@@ -4,9 +4,11 @@ const validator = require('../validators/notes')
 const router = require('express').Router()
 const authentification = require('../libs/authentificationJwt')
 const validationErrorsResponses = require('../libs/validationResponses')
+const queryParams = require('../libs/queryParams')
 const _ = require('lodash')
 const mongoose = require('mongoose')
 const Note = mongoose.model('notes')
+
 module.exports = (app) => {
   app.use('/note', router)
 }
@@ -24,7 +26,7 @@ router.get(
     const notes = await Note.find({ })
     res.json({ notes })
   })
-
+  
 router.get(
   '/populate/:noteId',
   validator.LIST,
@@ -34,7 +36,7 @@ router.get(
     const notes = await Note.findOne({ _id: _.get(req, 'params.noteId', null) }).populate({ path: 'sessionId' })
     res.json({ notes })
   })
-
+    
 router.post(
   '/',
   validator.CREATE,
@@ -48,23 +50,24 @@ router.post(
       seesionId: []
     })
     note.save()
-      .then(() => {
-        return res.json({ status: true, message: 'Note create.' })
-      })
-      .catch(next)
+    .then(() => {
+      return res.json({ status: true, message: 'Note create.' })
+    })
+    .catch(next)
   })
-
+      
 router.get(
   '/:noteId',
   validator.READ,
   validationErrorsResponses,
   authentification.verify,
+  queryParams,
   (req, res, next) => {
-    Note.findOne({ _id: _.get(req, 'params.noteId', null) })
-      .then(note => res.json(_.omit(note.toJSON(), ['userId'])))
+    Note.populateItem(req.paginator)
+      .then(note => res.json(_.get(note, [0], {})))
       .catch(next)
   })
-
+        
 router.put(
   '/:noteId',
   validator.UPDATE,
@@ -79,9 +82,9 @@ router.put(
         sessionId: _.get(req, 'body.sessionId', [])
       }
     })
-      .then(res.json({ status: true, message: 'Note updated.' }))
+    .then(res.json({ status: true, message: 'Note updated.' }))
   })
-
+          
 router.delete(
   '/:noteId',
   validator.DELETE,

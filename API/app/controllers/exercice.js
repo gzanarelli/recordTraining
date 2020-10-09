@@ -3,8 +3,9 @@
 const validator = require('../validators/exercises')
 const router = require('express').Router()
 const authentification = require('../libs/authentificationJwt')
-const _ = require('lodash')
 const validationErrorsResponses = require('../libs/validationResponses')
+const queryParams = require('../libs/queryParams')
+const _ = require('lodash')
 const mongoose = require('mongoose')
 const Exercise = mongoose.model('exercises')
 const Session = mongoose.model('sessions')
@@ -61,10 +62,11 @@ router.get(
   validator.READ,
   validationErrorsResponses,
   authentification.verify,
+  queryParams,
   (req, res, next) => {
-    Exercise.findOne({ _id: _.get(req, 'params.exerciseId', null) })
-      .then(exercise => res.json(_.omit(exercise.toJSON(), ['userId'])))
-      .catch(next)
+    Exercise.populateItem(req.paginator)
+    .then(exercise => res.json(_.get(exercise, [0], {})))
+    .catch(next)
   })
 
 router.put(

@@ -6,8 +6,6 @@ const _ = require('lodash')
 
 module.exports = (req, res, next) => {
   const errors = validationResult(req)
-  console.log(req)
-  console.log('Errors: ', errors)
   if (!errors.isEmpty()) {
     if (_.map(errors, err => err.location === 'headers').length > 0) {
       return next(Boom.unauthorized(null, errors.array()))

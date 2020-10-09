@@ -4,6 +4,7 @@ const validator = require('../validators/sessions')
 const router = require('express').Router()
 const authentification = require('../libs/authentificationJwt')
 const validationErrorsResponses = require('../libs/validationResponses')
+const queryParams = require('../libs/queryParams')
 const _ = require('lodash')
 const mongoose = require('mongoose')
 const Session = mongoose.model('sessions')
@@ -78,10 +79,11 @@ router.get(
   validator.READ,
   validationErrorsResponses,
   authentification.verify,
+  queryParams,
   (req, res, next) => {
-    Session.findOne({ _id: _.get(req, 'params.sessionId', null) })
-      .then(session => res.json(_.omit(session.toJSON(), ['userId'])))
-      .catch(next)
+    Session.populateItem(req.paginator)
+    .then(session => res.json(_.get(session, [0], {})))
+    .catch(next)
   })
 
 router.put(
