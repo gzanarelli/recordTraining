@@ -2,7 +2,7 @@ import React from 'react'
 import { Field, ErrorMessage } from 'formik'
 
 export default function LoginBlock (props) {
-  const { value, type, extraClass, setFieldValue } = props
+  const { value, type, extraClass } = props
   return (
     <div className={`loginBlock ${extraClass}`}>
       <div className='loginBlock__item'>
