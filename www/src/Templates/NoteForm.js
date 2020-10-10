@@ -9,19 +9,22 @@ class NoteForm extends React.Component {
 	constructor(props) {
 		super(props)
 	}
-
 	render() {
+		const { history, action, match } = this.props
 		return (
 			<div className="login">
-				<h1>Ajouter une note</h1>
+				<h1>
+					{action === 'put' ? 'Editer' : 'Ajouter' } une note
+				</h1>
 				<GlobalForm
 					initialValues={{
 						label: ''
 					}}
-					url='note'
+					url='note/'
 					backUrl='/note'
-					verb='post'
-					history={this.props.history}
+					putId={_.get(match, 'params.noteId')}
+					verb={action}
+					history={history}
 				/>
 			</div>
 		)

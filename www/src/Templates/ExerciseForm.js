@@ -10,23 +10,30 @@ class SessionForm extends React.Component {
 	}
 
 	render() {
-    return (
+		const { match, action, history } = this.props
+		const initialValues = {
+			label: '',
+			value: '',
+			numberSessions: '',
+			numberRepetitions: '',
+			weight: '',
+			timeOut: ''
+		}
+
+		if (action === 'post') {
+			initialValues.sessionId = _.get(match, 'params.sessionId')
+		}
+
+		return (
 			<div className="login">
-				<h1>Ajouter un exercice</h1>
+				<h1>{action === 'put' ? 'Editer' : 'Ajouter' } un exercice</h1>
 				<GlobalForm
-					initialValues={{
-						label: '',
-						value: '',
-						numberSessions: '',
-						numberRepetitions: '',
-						weight: '',
-						timeOut: '',
-						sessionId: _.get(this, 'props.match.params.sessionId')
-					}}
-					url='exercise'
-					backUrl={'/exercise/' + _.get(this, 'props.match.params.sessionId')}
-					verb='post'
-					history={this.props.history}
+					initialValues={initialValues}
+					url='exercise/'
+					putId={_.get(match, 'params.exerciseId')}
+					backUrl={'/exercise/' + _.get(match, 'params.sessionId')}
+					verb={action}
+					history={history}
 				/>
 			</div>
 		)

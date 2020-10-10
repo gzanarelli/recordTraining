@@ -1,15 +1,39 @@
-.button {
+.btn {
+	position: relative;
 	width: 100%;
 	height: 100%;
-	background-color: $secondary;
+	background: linear-gradient(320.66deg, #016BB8 14.75%, #11A8FD 84.81%);
 	border-radius: 50%;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: -1;
+		margin: -2px;
+		border-radius: inherit;
+		background: linear-gradient(320.66deg, #11A8FD 14.75%, #0081C9 84.81%);
+	}
 
 	&:focus {
 		outline: 0;
 	}
 	
 	&--dark {
-		background-color: $dark-80;
+		background: linear-gradient($btn-dark-top, $btn-dark-bot);
+		transform: rotate(180deg);
+	
+		&::before {
+			content: '';
+			background: linear-gradient($btn-dark-bot, $btn-dark-top);
+		}
+
+		&__link {
+			color: $gray;
+		}
 	}
 
 	&__link {
@@ -18,7 +42,11 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-		font-size: 200%;
-		color: $dark-sec;
+		font-size: 100%;
+		color: $white;
+
+		i {
+			z-index: 10;
+		}
 	}
 }

@@ -17,7 +17,7 @@ export const Nav = withRouter(({ location, history, state }) => {
       </div>
 
       <div className='nav__bloc'>
-        <button onClick={() => history.goBack()} className='nav__go-back'>
+        <button onClick={() => history.goBack()} className='nav__go-back btn btn--dark'>
           <i className='fas fa-arrow-left nav__go-back__link' />
         </button>
       </div>

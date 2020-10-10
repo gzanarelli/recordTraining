@@ -14,19 +14,20 @@ import Nav from './Components/Nav'
 import ExerciseForm from './Templates/ExerciseForm'
 import Exercise from './Templates/Exercise'
 
-const Token = ({ component: Component, ...remainder }) => {
+const Token = ({ component: Component, action, ...remainder }) => {
   const token = ls.get('token')
   return (
     <Route
       {...remainder}
       render={(props) => token !== 'undefined' && token
-        ? <Component {...props} />
+        ? <Component {...props} action={action} />
         : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />}
     />
   )
 }
 
-const AnimatedSwitch = withRouter(({ location, datas }) => {
+const AnimatedSwitch = ({props}) => {
+  console.log('props: ', props)
   return (
     // <TransitionGroup>
     //   <CSSTransition
@@ -34,7 +35,7 @@ const AnimatedSwitch = withRouter(({ location, datas }) => {
     //     timeout={1000}
     //     classNames='page'
     //   >
-    <Switch location={location}>
+    <Switch>
       <Route exact path='/login'>
         <Login />
       </Route>
@@ -42,23 +43,31 @@ const AnimatedSwitch = withRouter(({ location, datas }) => {
         <Login />
       </Route>
       <Token exact path='/note' component={Note} />
-      <Token exact path='/note/add' component={NoteForm} />
-      <Token exact path='/session/add/:noteId' component={SessionForm} />
+      <Token exact path='/note/add' component={NoteForm} action='post'/>
+      <Token exact path='/note/edit/:noteId' component={NoteForm} action='put'/>
       <Token exact path='/session/:noteId' component={Session} />
-      <Token exact path='/exercise/add/:sessionId' component={ExerciseForm} />
+      <Token exact path='/session/add/:noteId' component={SessionForm} action='post'/>
+      <Token exact path='/session/edit/:sessionId' component={SessionForm} action='put'/>
       <Token exact path='/exercise/:sessionId' component={Exercise} />
+      <Token exact path='/exercise/add/:sessionId' component={ExerciseForm} action='post'/>
+      <Token exact path='/exercise/edit/:exerciseId' component={ExerciseForm} action='put'/>
     </Switch>
     //   </CSSTransition>
     // </TransitionGroup>
   )
-})
+}
 
 class Routes extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+  
   render () {
+    console.log('Route ', this)
     return (
       <Router>
         <Nav />
-        <AnimatedSwitch />
+        <AnimatedSwitch {...this.props} />
       </Router>
     )
   }

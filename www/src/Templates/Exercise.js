@@ -18,6 +18,7 @@ class Exercise extends React.Component {
   componentDidMount () {
     axios.get('session/' + this.props.match.params.sessionId + '?populate=exercisesId')
       .then(datas => {
+        console.log('Exercices: ', datas)
         this.setState({ exercises: _.get(datas, 'data.exercisesId', []) })
       })
   }
@@ -29,7 +30,7 @@ class Exercise extends React.Component {
       <div className='home'>
         {_.map(exercises, (exercise, index) => {
           return (
-            <CardExercise key={index} datas={exercise} url='/exercise/update/' type='exercises' />
+            <CardExercise key={index} datas={exercise} url='/exercise/' type='exercise' />
           )
         })}
         <div className='home__item'>

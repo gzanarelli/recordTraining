@@ -4,11 +4,12 @@
   height: 120px;
   justify-content: space-between;
   color: $white;
-  background-color: $dark;
+  background: linear-gradient($back-top, $back-bot);
   box-shadow: 0 10px 5px 0 rgba(0,0,0,0.75);
   border-radius: 0 0 5px 5px;
   margin-bottom: 30px;
   padding: 20px;
+  z-index: 999;
   
   &__bloc {
     display: flex;
@@ -24,6 +25,7 @@
   }
 
   &__logout {
+    margin: 4px;
     width: 35px;
     height: 35px;
     box-shadow: 0 0px 5px 0 rgba(0,0,0,0.75);
@@ -39,10 +41,5 @@
     width: 30px;
     height: 20px;
     border-radius: 5px;
-    background-color: $dark-80;
-    box-shadow: 0 0px 5px 0 rgba(0,0,0,0.75);
-    font-size: 140%;
-    text-align: center;
-    color: $dark-sec;
   }
 }

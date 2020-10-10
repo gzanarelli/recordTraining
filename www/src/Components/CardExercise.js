@@ -6,6 +6,7 @@ export default function CardExercise (datas) {
   if (!datas) {
     return null
   }
+  console.log('exercice card: ', datas);
   return (
     <div className='card'>
       <Link to={datas.url + datas.datas._id} className='card__link'>
@@ -17,6 +18,7 @@ export default function CardExercise (datas) {
           <p>Temps de repos: {_.get(datas, 'datas.timeOut')}</p>
         </div>
       </Link>
+      <Link to={'/' + datas.type + '/edit/' + datas.datas._id}>Edit</Link>
     </div>
   )
 }

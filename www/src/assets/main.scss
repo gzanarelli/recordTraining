@@ -14,7 +14,8 @@
 @import 'templates/login';
 
 .content {
-  background-color: $dark;
+  background: linear-gradient($back-top, $back-bot);
+  background-attachment: fixed;
   font-size: 1.2rem;
   min-height: 100vh;
   top: 0;
@@ -23,4 +24,8 @@
 .wrapper {
   max-width: 768px;
   margin: 0 auto;
+}
+
+svg.anim {
+  color: blue;
 }

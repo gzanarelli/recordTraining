@@ -6,6 +6,7 @@ export default function Card (datas) {
   if (!datas) {
     return null
   }
+
   return (
     <div className='card'>
       <Link to={datas.url + datas.datas._id} className='card__link'>
@@ -16,6 +17,7 @@ export default function Card (datas) {
           </p>
         </div>
       </Link>
+      <Link to={'/' + datas.type + '/edit/' + datas.datas._id}>Edit</Link>
     </div>
   )
 }

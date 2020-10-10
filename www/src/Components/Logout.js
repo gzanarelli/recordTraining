@@ -4,9 +4,9 @@ import ls from 'local-storage'
 
 export default function Logout () {
   return (
-    <div className='button button--dark'>
-      <Link onClick={() => ls.clear()} to='/login' className='button__link'>
-        <i className='fas fa-power-off' />
+    <div className='btn'>
+      <Link onClick={() => ls.clear()} to='/login' className='btn__link'>
+        <i class="fas fa-sign-out-alt"></i>
       </Link>
     </div>
   )
