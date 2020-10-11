@@ -2,8 +2,20 @@
 
 const mongoose = require('mongoose')
 const mongoosePopulate = require('../libs/mongoosePopulate')
+const moment = require('moment')
+
 const noteSchema = new mongoose.Schema({
   label: {
+    type: String
+  },
+  objectif: {
+    type: String,
+    default: moment().format('LL'),
+  },
+  tag: {
+    type: String
+  },
+  colorTag: {
     type: String
   },
   userId: {

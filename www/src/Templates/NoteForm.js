@@ -18,7 +18,10 @@ class NoteForm extends React.Component {
 				</h1>
 				<GlobalForm
 					initialValues={{
-						label: ''
+						label: '',
+						objectif: '',
+						tag: '',
+						colorTag: '',
 					}}
 					url='note/'
 					backUrl='/note'

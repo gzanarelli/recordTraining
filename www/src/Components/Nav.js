@@ -1,12 +1,23 @@
 import React from 'react'
 import { withRouter, Link } from 'react-router-dom'
+import ls from 'local-storage'
+import {toast} from 'react-toastify'
 
 import Logout from './Logout'
 
-export const Nav = withRouter(({ location, history, state }) => {
+const Nav = withRouter(({ location, history, state }) => {
   if (location.pathname === '/login' || location.pathname === '/signup') {
     return ''
   }
+
+  const message = ls('successMessage')
+  if (message) {
+    console.log(message)
+    toast.success(message)
+    ls.remove('successMessage')
+  }
+
+
   return (
     <div className='nav'>
 

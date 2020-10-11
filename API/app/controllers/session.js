@@ -62,6 +62,8 @@ router.post(
       _id: ID,
       label: _.get(req, 'body.label', ''),
       userId: _.get(req, 'decoded.payload._id', ''),
+      tag: _.get(req, 'body.tag', ''),
+      colorTag: _.get(req, 'body.colorTag', ''),
       exercicesId: []
     })
     session.save()
@@ -97,7 +99,8 @@ router.put(
     }, {
       $set: {
         label: _.get(req, 'body.label', ''),
-        exercicesId: _.get(req, 'body.exercicesId', [])
+        tag: _.get(req, 'body.tag', ''),
+        colorTag: _.get(req, 'body.colorTag', ''),
       }
     })
       .then(res.json({ status: true, message: 'Session updated.' }))

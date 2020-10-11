@@ -7,6 +7,12 @@ module.exports = {
     body('label')
       .isString()
       .optional(false),
+    body('tag')
+      .isString()
+      .optional(false),
+    body('colorTag')
+      .isString()
+      .optional(false),
     body('noteId')
       .isMongoId()
       .optional(false),
@@ -30,6 +36,12 @@ module.exports = {
     body('label')
       .isString()
       .optional(false),
+    body('tag')
+      .isString()
+      .optional(true),
+    body('colorTag')
+      .isString()
+      .optional(true),
     body('exercisesId')
       .isMongoId()
       .optional(true)

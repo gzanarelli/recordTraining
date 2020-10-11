@@ -7,6 +7,13 @@ const sessionSchema = new mongoose.Schema({
   label: {
     type: String
   },
+  tag: {
+    type: String
+  },
+  colorTag: {
+    type: String
+  },
+
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'users'

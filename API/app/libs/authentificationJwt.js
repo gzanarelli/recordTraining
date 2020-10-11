@@ -3,7 +3,7 @@
 const jwt = require('jsonwebtoken')
 const Promise = require('bluebird')
 const Boom = require('@hapi/boom')
-
+const log = require('debug')('recordWorkout:libs:JWT')
 /**
  * Verification user's token with
  * an algorithm RS512 and
@@ -11,8 +11,8 @@ const Boom = require('@hapi/boom')
  * and for refresh token: 3d
  */
 const verify = (req, res, next) => {
-  console.log(req.headers.token)
-  console.log(process.env.JWT_PUB)
+
+  log('Verify: ', req.headers.token)
   return jwt.verify(
     req.headers.token,
     process.env.JWT_PUB,

@@ -46,6 +46,9 @@ router.post(
     console.log(req.body)
     const note = new Note({
       label: _.get(req, 'body.label', ''),
+      objectif: _.get(req, 'body.objectif', ''),
+      tag: _.get(req, 'body.tag', ''),
+      colorTag: _.get(req, 'body.colorTag', ''),
       userId: _.get(req, 'decoded.payload._id', ''),
       seesionId: []
     })
@@ -79,7 +82,9 @@ router.put(
     }, {
       $set: {
         label: _.get(req, 'body.label', ''),
-        sessionId: _.get(req, 'body.sessionId', [])
+        objectif: _.get(req, 'body.objectif', ''),
+        tag: _.get(req, 'body.tag', ''),
+        colorTag: _.get(req, 'body.colorTag', ''),
       }
     })
     .then(res.json({ status: true, message: 'Note updated.' }))

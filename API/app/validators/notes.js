@@ -7,6 +7,15 @@ module.exports = {
     body('label')
       .isString()
       .optional(false),
+    body('objectif')
+      .isString()
+      .optional(false),
+    body('tag')
+      .isString()
+      .optional(false),
+    body('colorTag')
+      .isString()
+      .optional(false),
     body('sessionId')
       .isMongoId()
       .optional(true)
@@ -26,7 +35,16 @@ module.exports = {
       .optional(false),
     body('label')
       .isString()
-      .optional(false),
+      .optional(true),
+    body('objectif')
+      .isString()
+      .optional(true),
+    body('tag')
+      .isString()
+      .optional(true),
+    body('colorTag')
+      .isString()
+      .optional(true),
     body('sessionId')
       .isMongoId()
       .optional(true)

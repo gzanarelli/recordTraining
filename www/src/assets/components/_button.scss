@@ -4,6 +4,13 @@
 	height: 100%;
 	background: linear-gradient(320.66deg, #016BB8 14.75%, #11A8FD 84.81%);
 	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&--second {
+		border-radius: 4px;
+	}
 
 	&::before {
 		content: '';
@@ -12,8 +19,7 @@
 		right: 0;
 		bottom: 0;
 		left: 0;
-		z-index: -1;
-		margin: -2px;
+		margin: 2px;
 		border-radius: inherit;
 		background: linear-gradient(320.66deg, #11A8FD 14.75%, #0081C9 84.81%);
 	}

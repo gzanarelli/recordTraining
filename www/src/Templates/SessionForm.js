@@ -13,7 +13,9 @@ class SessionForm extends React.Component {
 		const { history, action, match } = this.props
 		console.log('action form note: ', this.props)
 		const initialValues = {
-			label: ''
+			label: '',
+			tag: '',
+			colorTag: '',
 		}
 		if (action === 'post') {
 			initialValues.noteId = _.get(match, 'params.noteId')

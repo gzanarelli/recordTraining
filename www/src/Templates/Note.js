@@ -2,6 +2,8 @@ import React from 'react'
 import axios from '../axios/axios'
 import _ from 'lodash'
 import { connect } from 'react-redux'
+import {toast} from 'react-toastify'
+import ls from 'local-storage'
 
 import Card from '../Components/Card'
 import Button from '../Components/Button'
@@ -28,7 +30,7 @@ class Home extends React.Component {
       <div className='home'>
         {_.map(notes, (note, index) => {
           return (
-            <Card key={index} datas={note} url='/session/' name='sessions' type='note' />
+            <Card key={index} datas={note} url='/session/' name='sessions' type='note' history={this.props.history}/>
           )
         })}
         <div className='home__item'>
