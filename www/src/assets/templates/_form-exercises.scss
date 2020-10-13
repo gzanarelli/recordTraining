@@ -9,24 +9,36 @@
     height: 100%;
   }
 
+  &__categories {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      padding: 10px;
+      border: 1px solid #016BB8;
+    }
+  }
+
   &__list {
     position: relative;
     width: 100%;
     height: 60%;
-    overflow: scroll;
-    background-color: white;
+    overflow-y: scroll;
+    background: linear-gradient($back-top, $back-bot);
   }
 
   &__show {
     position: absolute;
     display: flex;
     flex-direction: column;
-    overflow: scroll;
+    overflow: hidden;
     z-index: 2;
     width: 100%;
     bottom: 0;
-    background-color: blue;
-    padding: 0 0 150px 0;
+    border-radius: 50px 50px 0 0;
+    background: linear-gradient($back-top, $back-bot);
+    padding: 40px 0 150px 0;
+    overflow-y: scroll;
   }
 
   &__arrow {
@@ -35,4 +47,50 @@
     top: 0;
     text-align: center;
   }
+}
+
+.form-ex__list::-webkit-scrollbar {
+  width: 10px;
+  opacity: 0;
+  transform: scale(0);
+
+  &:hover {
+    width: 10px;
+    opacity: 1;
+  }
+}
+ 
+.form-ex__list::-webkit-scrollbar-track {
+  // box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+}
+ 
+.form-ex__list::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  border-radius: 5px;
+  // outline: 1px solid slategrey;
+}
+
+.form-ex__show::-webkit-scrollbar {
+  width: 10px;
+  opacity: 0;
+  transform: scale(0);
+  
+  &:hover {
+    width: 10px;
+    opacity: 1;
+  }
+}
+
+.form-ex__show::-webkit-scrollbar-track {
+  border-radius: 5px;
+  margin: 45px 0 0;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.form-ex__show::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: darkgrey;
+  height: 15px;
+  // outline: 1px solid slategrey;
 }
