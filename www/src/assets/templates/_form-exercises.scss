@@ -10,21 +10,46 @@
   }
 
   &__categories {
-    display: flex;
+    display: inline-flex;
     justify-content: space-between;
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    overflow-x: auto;
 
     button {
-      padding: 10px;
-      border: 1px solid #016BB8;
+      flex: 0 0 100px;
+      padding: 10px 0;
+      background: linear-gradient($blue-top, $blue-bot);
+      border-radius: 4px;
+      border: 1px solid $blue-top;
+    }
+    
+    button + button {
+      margin-left: 8px;
     }
   }
 
   &__list {
     position: relative;
+    display: inline-flex;
+    flex-direction: column;
     width: 100%;
     height: 60%;
     overflow-y: scroll;
     background: linear-gradient($back-top, $back-bot);
+    align-items: center;
+  }
+
+  &__item {
+    border: 1px solid $blue-top;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    width: 90%;
+    padding: 5px;
+    margin: 5px;
+    justify-content: space-between;
   }
 
   &__show {

@@ -1,43 +1,21 @@
 import React from 'react'
 import _ from 'lodash'
 import { connect } from 'react-redux'
-
+import axios from '../axios/axios'
+import exercisesList from '../config/exercises.json'
 import GlobalForm from '../Components/GlobalForm'
 
 
-const categories = [{value: 'front', label: 'Front'},{value: 'arms', label: 'Arms'}, {value: 'abs', label: 'Abs'}, {value: 'back', label: 'Back'}, {value: 'leg', label: 'Leg'}]
+const categories = [
+  {value: 'chest', label: 'Chest'},
+  {value: 'arms', label: 'Arms'},
+  {value: 'abs', label: 'Abs'},
+  {value: 'back', label: 'Back'},
+  {value: 'legs', label: 'Legs'},
+  {value: 'calves', label: 'Calves'},
+  {value: 'shoulders', label: 'Shoulders'}
+]
 
-// const fakeDatas = [{
-//   label: 'Squat',
-//   value: 'squat',
-//   category: 'leg',
-//   select: false
-// }, {
-//   label: 'Developpe couche',
-//   value: 'developCouch',
-//   category: 'front',
-//   select: false
-// }, {
-//   label: 'Souleve de terre',
-//   value: 'souleveDeTerre',
-//   category: 'leg',
-//   select: false
-// }, {
-//   label: 'Developpe incline',
-//   value: 'developIncline',
-//   category: 'front',
-//   select: false
-// }, {
-//   label: 'Curl',
-//   value: 'curl',
-//   category: 'arms',
-//   select: false
-// }, {
-//   label: 'Traction',
-//   value: 'traction',
-//   category: 'back',
-//   select: false
-// }]
 
 class SessionForm extends React.Component {
   constructor (props) {
@@ -50,57 +28,46 @@ class SessionForm extends React.Component {
       categorySelect: 'front',
       exerciseShow: [],
       exercisesSelect: [],
-      fakeDatas: [{
-        label: 'Squat',
-        value: 'squat',
-        category: 'leg',
-        select: false
-      }, {
-        label: 'Developpe couche',
-        value: 'developCouch',
-        category: 'front',
-        select: false
-      }, {
-        label: 'Souleve de terre',
-        value: 'souleveDeTerre',
-        category: 'leg',
-        select: false
-      }, {
-        label: 'Developpe incline',
-        value: 'developIncline',
-        category: 'front',
-        select: false
-      }, {
-        label: 'Curl',
-        value: 'curl',
-        category: 'arms',
-        select: false
-      }, {
-        label: 'Traction',
-        value: 'traction',
-        category: 'back',
-        select: false
-      }]
+      exercises: exercisesList
 		}
   }
   
   componentDidMount() {
-    const exercises = _.filter(this.state.fakeDatas, data => data.category === this.state.categorySelect)
+
+  const { match } = this.props
+    const exercises = _.filter(this.state.exercises, data => data.category === this.state.categorySelect)
     this.setState({ exerciseShow: exercises })
+    axios.get('/session/' + _.get(match, 'params.sessionId') + '?populate=exercisesId')
+    .then(session => {
+      this.setState({
+        exercisesSelect: session.data.exercisesId
+      })
+      this.setState(state => {
+        const exercises = state.exercises.map(exercise => {
+          if (_.filter(this.state.exercisesSelect, select => select.value === exercise.value ).length > 0) {
+            return { ...exercise, select: true }
+          } else {
+            return exercise
+          }
+        })
+        return {
+          exercises
+        }
+      })
+    })
+    .catch(err => console.error(err))
   }
 
 	handleSize = () => {
 		if (this.state.bool) {
-			this.setState({size: '80%', bool: !this.state.bool, rotate: '180deg'})
+			this.setState({size: '95%', bool: !this.state.bool, rotate: '180deg'})
 		} else {
 			this.setState({size: '40%', bool: !this.state.bool, rotate: '0'})
 		}
 	}
 
   handleCategories = (value) => {
-    console.log(value)
-    const exercises = _.filter(this.state.fakeDatas, data => data.category === value)
-
+    const exercises = _.filter(this.state.exercises, data => data.category === value)
     this.setState({
       categorySelect: value,
       exerciseShow: exercises
@@ -108,17 +75,15 @@ class SessionForm extends React.Component {
   }
 
   handleExercisesSelect = (exercise) => {
-    console.log(exercise);
-
     this.setState(state => {
-      const fakeDatas = state.fakeDatas.map(item => {
+      const exercises = state.exercises.map(item => {
         if (item.value === exercise.value) {
           item.select = !item.select
         }
         return item
       });
       return {
-        fakeDatas
+        exercises
       }
     })
 
@@ -137,7 +102,6 @@ class SessionForm extends React.Component {
         }
       })
     }
-    console.log(this.state.exercisesSelect);
   }
 
   render () {
@@ -152,6 +116,8 @@ class SessionForm extends React.Component {
       timeOut: ''
     }
 
+    
+
     const categoriesShow = _.map(categories, category => {
       return (
         <button type='button' onClick={() => this.handleCategories(category.value)}>
@@ -165,20 +131,24 @@ class SessionForm extends React.Component {
       initialValues.sessionId = _.get(match, 'params.sessionId')
 		}
 		const {size, bool} = this.state
-		console.log(size, bool)
     return (
       <div className='form-ex wrapper'>
         <div className='form-ex__categories'>
           { categoriesShow }
         </div>
         <div className='form-ex__wrapper'>
-          <h1>{action === 'put' ? 'Editer' : 'Ajouter'} un exercice</h1>
           <ul className='form-ex__list'>
             {
               _.map(exerciseShow, (d, index) => {
                 return (
-                  <li key={index} style={{ padding: '20px' }}>
-                    {d.label}
+                  <li key={index} className='form-ex__item'>
+                    <div className='card__avatar-wrapper card__avatar-wrapper--exercise'>
+                      <img src='/img/Bench-press-1.png' className='avatar-top'></img>
+                      <img src='/img/Bench-press-2.png' className='avatar-bot'></img>
+                    </div>
+                    <p>
+                      {d.label}
+                    </p>
                     <button style={{ marginLeft: '20px' }} type='button' onClick={() => this.handleExercisesSelect(d)}>
                       { d.select ? 'Remove' : 'Add' }
                     </button>

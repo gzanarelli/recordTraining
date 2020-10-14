@@ -26,7 +26,7 @@ const Token = ({ component: Component, action, ...remainder }) => {
   )
 }
 
-const AnimatedSwitch = ({props}) => {
+const AnimatedSwitch = ({ props }) => {
   console.log('props: ', props)
   return (
     // <TransitionGroup>
@@ -43,14 +43,14 @@ const AnimatedSwitch = ({props}) => {
         <Login />
       </Route>
       <Token exact path='/note' component={Note} />
-      <Token exact path='/note/add' component={NoteForm} action='post'/>
-      <Token exact path='/note/edit/:noteId' component={NoteForm} action='put'/>
+      <Token exact path='/note/add' component={NoteForm} action='post' />
+      <Token exact path='/note/edit/:noteId' component={NoteForm} action='put' />
       <Token exact path='/session/:noteId' component={Session} />
-      <Token exact path='/session/add/:noteId' component={SessionForm} action='post'/>
-      <Token exact path='/session/edit/:sessionId' component={SessionForm} action='put'/>
+      <Token exact path='/session/add/:noteId' component={SessionForm} action='post' />
+      <Token exact path='/session/edit/:sessionId' component={ExerciseForm} action='put' />
       <Token exact path='/exercise/:sessionId' component={Exercise} />
-      <Token exact path='/exercise/add/:sessionId' component={ExerciseForm} action='post'/>
-      <Token exact path='/exercise/edit/:exerciseId' component={ExerciseForm} action='put'/>
+      {/* <Token exact path='/exercise/add/:sessionId' component={ExerciseForm} action='post' />
+      <Token exact path='/exercise/edit/:exerciseId' component={ExerciseForm} action='put' /> */}
     </Switch>
     //   </CSSTransition>
     // </TransitionGroup>
@@ -58,10 +58,10 @@ const AnimatedSwitch = ({props}) => {
 }
 
 class Routes extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
   }
-  
+
   render () {
     console.log('Route ', this)
     return (

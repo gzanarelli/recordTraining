@@ -1,0 +1,76 @@
+[{
+  "label": "Squat",
+  "value": "squat",
+  "category": "legs",
+  "select": false
+}, {
+  "label": "Développé couche",
+  "value": "bench",
+  "category": "chest",
+  "select": false
+}, {
+  "label": "Développé couché avec haltères",
+  "value": "dumbellBench",
+  "category": "chest",
+  "select": false
+}, {
+  "label": "Souleve de terre",
+  "value": "deadlift",
+  "category": "legs",
+  "select": false
+}, {
+  "label": "Développé incliné",
+  "value": "inclinedPress",
+  "category": "chest",
+  "select": false
+}, {
+  "label": "Développé décliné",
+  "value": "declinedPress",
+  "category": "chest",
+  "select": false
+}, {
+  "label": "Pappilons",
+  "value": "butterfly",
+  "category": "chest",
+  "select": false
+}, {
+  "label": "Curl Barre",
+  "value": "curlBar",
+  "category": "arms",
+  "select": false
+}, {
+  "label": "Curl à la poulie",
+  "value": "pulleyCurl",
+  "category": "arms",
+  "select": false
+}, {
+  "label": "Curl haltères",
+  "value": "dumbbellCurl",
+  "category": "arms",
+  "select": false
+}, {
+  "label": "Curl marteau",
+  "value": "hammerCurl",
+  "category": "arms",
+  "select": false
+}, {
+  "label": "Rowing barre",
+  "value": "rowingBar",
+  "category": "back",
+  "select": false
+}, {
+  "label": "Tirage horizontal",
+  "value": "horizontalDraft",
+  "category": "back",
+  "select": false
+}, {
+  "label": "Tirage vertical",
+  "value": "verticalDraft",
+  "category": "back",
+  "select": false
+}, {
+  "label": "Tractions",
+  "value": "traction",
+  "category": "back",
+  "select": false
+}]
