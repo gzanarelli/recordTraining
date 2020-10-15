@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import axios from '../axios/axios'
 import exercisesList from '../config/exercises.json'
 import GlobalForm from '../Components/GlobalForm'
-
+import CardExerciseForm from '../Components/CardExerciseForm'
+import CardExerciseFormSelect from '../Components/CardExerciseFormSelect'
 
 const categories = [
   {value: 'chest', label: 'Chest'},
@@ -22,10 +23,10 @@ class SessionForm extends React.Component {
     super(props)
 
 		this.state = {
-			size: '40%',
+			size: '45%',
 			bool: true,
       rotate: 0,
-      categorySelect: 'front',
+      categorySelect: 'chest',
       exerciseShow: [],
       exercisesSelect: [],
       exercises: exercisesList
@@ -60,9 +61,9 @@ class SessionForm extends React.Component {
 
 	handleSize = () => {
 		if (this.state.bool) {
-			this.setState({size: '95%', bool: !this.state.bool, rotate: '180deg'})
+			this.setState({size: '100%', bool: !this.state.bool, rotate: '180deg'})
 		} else {
-			this.setState({size: '40%', bool: !this.state.bool, rotate: '0'})
+			this.setState({size: '45%', bool: !this.state.bool, rotate: '0'})
 		}
 	}
 
@@ -139,20 +140,13 @@ class SessionForm extends React.Component {
         <div className='form-ex__wrapper'>
           <ul className='form-ex__list'>
             {
-              _.map(exerciseShow, (d, index) => {
+              _.map(exerciseShow, (exercise, index) => {
                 return (
-                  <li key={index} className='form-ex__item'>
-                    <div className='card__avatar-wrapper card__avatar-wrapper--exercise'>
-                      <img src='/img/Bench-press-1.png' className='avatar-top'></img>
-                      <img src='/img/Bench-press-2.png' className='avatar-bot'></img>
-                    </div>
-                    <p>
-                      {d.label}
-                    </p>
-                    <button style={{ marginLeft: '20px' }} type='button' onClick={() => this.handleExercisesSelect(d)}>
-                      { d.select ? 'Remove' : 'Add' }
-                    </button>
-                  </li>
+                  <CardExerciseForm
+                    exercise={exercise}
+                    index={index}
+                    handleExercisesSelect={this.handleExercisesSelect}
+                  />
                 )
               })
             }
@@ -165,9 +159,10 @@ class SessionForm extends React.Component {
               {
                 _.map(exercisesSelect, (exercise, index) => {
                   return (
-                    <li key={index} value={exercise.value}>
-                      { exercise.label }
-                    </li>
+                      <CardExerciseFormSelect
+                        exercise={exercise}
+                        index={index}
+                      />
                   )
                 })
               }

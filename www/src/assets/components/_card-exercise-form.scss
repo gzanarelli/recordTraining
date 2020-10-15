@@ -1,0 +1,61 @@
+.card-ex-form {
+  display: flex;
+  position: relative;
+  width: 90%;
+  padding: 10px 5px;
+  align-items: center;
+  border-bottom: 1px solid $dark-80;
+
+  &__avatar {
+    padding: 10px;
+    background-color: $white;
+    border-radius: 4px;
+  }
+
+  &__avatar-wrapper {
+    position: relative;
+    display: flex;
+    width: 15%;
+    min-width: 50px;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      display: block;
+      padding-bottom: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    img {
+      position: absolute;
+    }
+  }
+
+  &__title {
+    flex: 0 1 45%;
+    margin-left: 30px;
+    font-size: 1.3rem;
+    line-height: 1.5;
+  }
+
+  &__btn {
+    position: absolute;
+    right: 0;
+    padding: 10px;
+    background: linear-gradient($blue-top, $blue-bot);
+    border-radius: 4px;
+    border: 1px solid $blue-top;
+
+    &--remove {
+      background: linear-gradient($sunset, $red_bot);
+      border: 1px solid $sunset;
+    }
+
+    i {
+      color: $white;
+    }
+  }
+}
