@@ -23,7 +23,7 @@ class SessionForm extends React.Component {
     super(props)
 
 		this.state = {
-			size: '45%',
+			classes: '',
 			bool: true,
       rotate: 0,
       categorySelect: 'chest',
@@ -61,9 +61,9 @@ class SessionForm extends React.Component {
 
 	handleSize = () => {
 		if (this.state.bool) {
-			this.setState({size: '100%', bool: !this.state.bool, rotate: '180deg'})
+			this.setState({classes: 'form-ex__show--active', bool: !this.state.bool, rotate: 'form-ex__arrow--active'})
 		} else {
-			this.setState({size: '45%', bool: !this.state.bool, rotate: '0'})
+			this.setState({classes: '', bool: !this.state.bool, rotate: ''})
 		}
 	}
 
@@ -131,44 +131,46 @@ class SessionForm extends React.Component {
     if (action === 'post') {
       initialValues.sessionId = _.get(match, 'params.sessionId')
 		}
-		const {size, bool} = this.state
+		const {classes, bool, rotate} = this.state
     return (
       <div className='form-ex wrapper'>
         <div className='form-ex__categories'>
           { categoriesShow }
         </div>
         <div className='form-ex__wrapper'>
-          <ul className='form-ex__list'>
-            {
-              _.map(exerciseShow, (exercise, index) => {
-                return (
-                  <CardExerciseForm
+          <div className='form-ex__list'>
+            <ul className='form-ex__select'>
+              {
+                _.map(exerciseShow, (exercise, index) => {
+                  return (
+                    <CardExerciseForm
                     exercise={exercise}
                     index={index}
                     handleExercisesSelect={this.handleExercisesSelect}
-                  />
-                )
-              })
-            }
-            <div className='form-ex__show' style={{height: this.state.size }}>
-              <button type='button' onClick={this.handleSize} className='form-ex__arrow' style={{transform: `rotate(${this.state.rotate})`}}>
+                    />
+                  )
+                })
+              }
+            </ul>
+            <div className={`form-ex__show ${classes}`}>
+              <button type='button' onClick={this.handleSize} className={`form-ex__arrow ${rotate}`}>
                 <i class='fas fa-arrow-up' />
               </button>
-              <ul>
+              <ul className='form-ex__wrapper-select'>
                 {
                   _.map(exercisesSelect, (exercise, index) => {
                     return (
                         <CardExerciseFormSelect
-                          exercise={exercise}
-                          index={index}
-                          handleExercisesSelect={this.handleExercisesSelect}
+                        exercise={exercise}
+                        index={index}
+                        handleExercisesSelect={this.handleExercisesSelect}
                         />
-                    )
-                  })
-                }
+                        )
+                      })
+                    }
               </ul>
             </div>
-          </ul>
+          </div>
         </div>
       </div>
     )
