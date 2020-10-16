@@ -150,24 +150,25 @@ class SessionForm extends React.Component {
                 )
               })
             }
+            <div className='form-ex__show' style={{height: this.state.size }}>
+              <button type='button' onClick={this.handleSize} className='form-ex__arrow' style={{transform: `rotate(${this.state.rotate})`}}>
+                <i class='fas fa-arrow-up' />
+              </button>
+              <ul>
+                {
+                  _.map(exercisesSelect, (exercise, index) => {
+                    return (
+                        <CardExerciseFormSelect
+                          exercise={exercise}
+                          index={index}
+                          handleExercisesSelect={this.handleExercisesSelect}
+                        />
+                    )
+                  })
+                }
+              </ul>
+            </div>
           </ul>
-          <div className='form-ex__show' style={{height: this.state.size}}>
-            <button type='button' onClick={this.handleSize} className='form-ex__arrow' style={{transform: `rotate(${this.state.rotate})`}}>
-              <i class='fas fa-arrow-up' />
-            </button>
-            <ul>
-              {
-                _.map(exercisesSelect, (exercise, index) => {
-                  return (
-                      <CardExerciseFormSelect
-                        exercise={exercise}
-                        index={index}
-                      />
-                  )
-                })
-              }
-            </ul>
-          </div>
         </div>
       </div>
     )

@@ -13,7 +13,16 @@ export default function CardExerciseFormSelect (props) {
           <img src='/img/Bench-press-2.png' className='img-bot' />
         </div>
       </div>
-      {props.exercise.label}
+      <p className='card-ex-form__title'>
+        {props.exercise.label}
+      </p>
+      <button
+        className={`card-ex-form__btn ${props.exercise.select ? 'card-ex-form__btn--remove' : ''}`}
+        type='button'
+        onClick={() => props.handleExercisesSelect(props.exercise)}
+      >
+        {props.exercise.select ? <i class='far fa-trash-alt' /> : <i class='fas fa-plus' />}
+      </button>
     </li>
   )
 }
