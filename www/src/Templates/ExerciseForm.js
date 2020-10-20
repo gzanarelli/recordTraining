@@ -6,6 +6,7 @@ import exercisesList from '../config/exercises.json'
 import GlobalForm from '../Components/GlobalForm'
 import CardExerciseForm from '../Components/CardExerciseForm'
 import CardExerciseFormSelect from '../Components/CardExerciseFormSelect'
+import { Formik, Form, FieldArray } from 'formik'
 
 const categories = [
   {value: 'chest', label: 'Chest'},
@@ -28,8 +29,9 @@ class SessionForm extends React.Component {
       rotate: 0,
       categorySelect: 'chest',
       exerciseShow: [],
-      exercisesSelect: [],
-      exercises: exercisesList
+      exercisesForm: [],
+      exercises: exercisesList,
+      initialValues: []
 		}
   }
   
@@ -41,11 +43,11 @@ class SessionForm extends React.Component {
     axios.get('/session/' + _.get(match, 'params.sessionId') + '?populate=exercisesId')
     .then(session => {
       this.setState({
-        exercisesSelect: session.data.exercisesId
+        exercisesForm: session.data.exercisesId
       })
       this.setState(state => {
         const exercises = state.exercises.map(exercise => {
-          if (_.filter(this.state.exercisesSelect, select => select.value === exercise.value ).length > 0) {
+          if (_.filter(this.state.exercisesForm, select => select.value === exercise.value ).length > 0) {
             return { ...exercise, select: true }
           } else {
             return exercise
@@ -55,6 +57,18 @@ class SessionForm extends React.Component {
           exercises
         }
       })
+      const initialValues = []
+
+      _.map(this.state.exercisesForm, exercise => {
+        initialValues.push({
+          value: exercise.value,
+          numberRepetitions: exercise.numberRepetitions,
+          numberSessions: exercise.numberSessions,
+          timeOut: exercise.timeOut
+        })
+      })
+      this.setState({ initialValues })
+  
     })
     .catch(err => console.error(err))
   }
@@ -87,50 +101,51 @@ class SessionForm extends React.Component {
         exercises
       }
     })
-
+    console.log(this.state.exercisesForm)
     if (exercise.select) {
       this.setState(state => {
-        const exercisesSelect = state.exercisesSelect.filter(item => item.value !== exercise.value)
+        const exercisesForm = state.exercisesForm.filter(item => item.value !== exercise.value)
         return {
-          exercisesSelect
+          exercisesForm
         }
       })
     } else {
       this.setState(state => {
-        const exercisesSelect = state.exercisesSelect.concat(exercise);
+        const exercisesForm = state.exercisesForm.concat(exercise);
         return {
-          exercisesSelect
+          exercisesForm
         }
       })
     }
   }
 
+  onSubmit (values) {
+    console.log('Submit: ', values)
+  }
+
+  onValidate (values) {
+    console.log('Validate fields');
+    console.log(values)
+  }
+
   render () {
     const { match, action } = this.props
-    const { exerciseShow, exercisesSelect } = this.state
-    const initialValues = {
-      label: '',
-      value: '',
-      numberSessions: '',
-      numberRepetitions: '',
-      weight: '',
-      timeOut: ''
-    }
-
-    
-
-    const categoriesShow = _.map(categories, category => {
+    const { exerciseShow, exercisesForm, initialValues } = this.state
+    if (initialValues.length === 0) {
       return (
-        <button type='button' onClick={() => this.handleCategories(category.value)}>
+        <div>
+          Loading...
+        </div>
+      )
+    }
+    const categoriesShow = _.map(categories, (category, index) => {
+      return (
+        <button key={index} type='button' onClick={() => this.handleCategories(category.value)}>
           {category.label}
         </button>
       )
     })
 
-
-    if (action === 'post') {
-      initialValues.sessionId = _.get(match, 'params.sessionId')
-		}
 		const {classes, bool, rotate} = this.state
     return (
       <div className='form-ex wrapper'>
@@ -138,41 +153,60 @@ class SessionForm extends React.Component {
           { categoriesShow }
         </div>
         <div className='form-ex__wrapper'>
-          <div className='form-ex__list'>
-            <ul className='form-ex__select'>
-              {
-                _.map(exerciseShow, (exercise, index) => {
-                  return (
-                    <CardExerciseForm
-                    exercise={exercise}
-                    index={index}
-                    handleExercisesSelect={this.handleExercisesSelect}
+          <Formik
+            onSubmit={this.onSubmit}
+            validate={this.onValidate}
+            initialValues={{exercises: initialValues}}
+            render={({values}) => (
+              <Form>
+                <FieldArray
+                  name='exercises'
+                  render={({remove, push}) => (
+                      <div className='form-ex__list'>
+                        <ul className='form-ex__select'>
+                          {
+                            _.map(exerciseShow, (exercise, index) => {
+                              return (
+                                <CardExerciseForm
+                                exercise={exercise}
+                                key={index}
+                                index={index}
+                                push={push}
+                                handleExercisesSelect={this.handleExercisesSelect}
+                                />
+                              )
+                            })
+                          }
+                        </ul>
+                        <div className={`form-ex__show ${classes}`}>
+                          <button type='button' onClick={this.handleSize} className={`form-ex__arrow ${rotate}`}>
+                            <i class='fas fa-arrow-up' />
+                          </button>
+                          <ul className='form-ex__wrapper-select'>
+                            {
+                              _.map(values.exercises, (exercise, index) => {
+                                return (
+                                <CardExerciseFormSelect
+                                    exercise={exercise}
+                                    key={index}
+                                    index={index}
+                                    remove={remove}
+                                    values={values}
+                                    handleExercisesSelect={this.handleExercisesSelect}
+                                  />
+                              )}
+                            )}
+                          </ul>
+                          <button type="submit">Sauvegarder</button>
+                          </div>
+                        </div>
+                      )}
                     />
-                  )
-                })
-              }
-            </ul>
-            <div className={`form-ex__show ${classes}`}>
-              <button type='button' onClick={this.handleSize} className={`form-ex__arrow ${rotate}`}>
-                <i class='fas fa-arrow-up' />
-              </button>
-              <ul className='form-ex__wrapper-select'>
-                {
-                  _.map(exercisesSelect, (exercise, index) => {
-                    return (
-                        <CardExerciseFormSelect
-                        exercise={exercise}
-                        index={index}
-                        handleExercisesSelect={this.handleExercisesSelect}
-                        />
-                        )
-                      })
-                    }
-              </ul>
-            </div>
+                  </Form>
+                )}
+              />
           </div>
         </div>
-      </div>
     )
   }
 }

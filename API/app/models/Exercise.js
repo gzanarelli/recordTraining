@@ -26,6 +26,10 @@ const exerciseSchema = new mongoose.Schema({
     type: String,
     default: '1' // minutes
   },
+  select: {
+    type: Boolean,
+    default: true
+  },
   createAt: {
     type: Date,
     default: Date.now()

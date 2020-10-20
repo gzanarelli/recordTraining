@@ -1,7 +1,8 @@
+import { remove } from 'lodash'
 import React from 'react'
+import { Field } from 'formik'
 
 export default function CardExerciseFormSelect (props) {
-  console.log('select: ', props)
   /**
    * Use same file for style that card exercise form
    */
@@ -14,24 +15,32 @@ export default function CardExerciseFormSelect (props) {
             <img src='/img/Bench-press-2.png' className='img-bot' />
           </div>
         </div>
-        <p className='card-ex-form__title'>
+        <p className='card-ex-form__title' type='text' name={`exercises.${props.index}.value`}>
           {props.exercise.label}
         </p>
         <button
-          className={`card-ex-form__btn ${props.exercise.select ? 'card-ex-form__btn--remove' : ''}`}
+          className='card-ex-form__btn card-ex-form__btn--remove'
           type='button'
-          onClick={() => props.handleExercisesSelect(props.exercise)}
+          onClick={() => {
+            props.handleExercisesSelect(props.exercise)
+            props.remove(props.index)
+          }}
         >
-          {props.exercise.select ? <i class='far fa-trash-alt' /> : <i class='fas fa-plus' />}
+          <i class='far fa-trash-alt' />
         </button>
       </div>
       <div className='card-ex-form'>
-        <p className='card-ex-form__title'>
-          {props.exercise.label}
-        </p>
-        <p className='card-ex-form__title'>
-          {props.exercise.label}
-        </p>
+        <span>
+          Set
+        </span>
+        <div>
+          <label htmlFor={`exercise.${props.index}.numberSessions`}> Sessions </label>
+          <Field className='card-ex-form__title' type='number' name={`exercises.${props.index}.numberSessions`} defaultValue={props.exercise.numberSessions} />
+          <label htmlFor={`exercise.${props.index}.numberRepetitions`}> Répétitions </label>
+          <Field className='card-ex-form__title' type='number' name={`exercises.${props.index}.numberRepetitions`} defaultValue={props.exercise.numberRepetitions} />
+          <label htmlFor={`exercise.${props.index}.timeOut`}> Temps de repos </label>
+          <Field className='card-ex-form__title' type='number' name={`exercises.${props.index}.timeOut`} defaultValue={props.exercise.timeOut} />
+        </div>
       </div>
     </li>
   )
