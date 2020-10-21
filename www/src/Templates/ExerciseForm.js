@@ -7,6 +7,7 @@ import GlobalForm from '../Components/GlobalForm'
 import CardExerciseForm from '../Components/CardExerciseForm'
 import CardExerciseFormSelect from '../Components/CardExerciseFormSelect'
 import { Formik, Form, FieldArray } from 'formik'
+import Promise from 'bluebird'
 
 const categories = [
   {value: 'chest', label: 'Chest'},
@@ -38,41 +39,55 @@ class SessionForm extends React.Component {
   componentDidMount() {
 
   const { match } = this.props
-    const exercises = _.filter(this.state.exercises, data => data.category === this.state.categorySelect)
-    this.setState({ exerciseShow: exercises })
-    axios.get('/session/' + _.get(match, 'params.sessionId') + '?populate=exercisesId')
-    .then(session => {
-      this.setState({
-        exercisesForm: session.data.exercisesId
-      })
-      this.setState(state => {
-        const exercises = state.exercises.map(exercise => {
-          if (_.filter(this.state.exercisesForm, select => select.value === exercise.value ).length > 0) {
-            return { ...exercise, select: true }
-          } else {
-            return exercise
-          }
-        })
-        return {
-          exercises
+  axios.get('/session/' + _.get(match, 'params.sessionId') + '?populate=exercisesId')
+  .then(session => {
+    this.setState({
+      exercisesForm: session.data.exercisesId
+    })
+    this.setState(state => {
+      const exercises = state.exercises.map(exercise => {
+        if (_.filter(this.state.exercisesForm, select => select.value === exercise.value ).length > 0) {
+          return { ...exercise, select: true }
+        } else {
+          return exercise
         }
       })
-      const initialValues = []
-
-      _.map(this.state.exercisesForm, exercise => {
-        initialValues.push({
-          value: exercise.value,
-          numberRepetitions: exercise.numberRepetitions,
-          numberSessions: exercise.numberSessions,
-          timeOut: exercise.timeOut
+      return {
+        exercises
+      }
+    })
+    const initialValues = []
+    
+    if (this.state.exercisesForm.length === 0) {
+      this.setState({ initialValues: [{
+        label: '',
+        value: '',
+        select: true,
+        numberRepetitions: 0,
+        numberSessions: 0,
+          weight: 0,
+          timeOut: 0
+        }]})
+      } else {
+        _.map(this.state.exercisesForm, exercise => {
+          initialValues.push({
+            label: exercise.label,
+            weight: exercise.weight,
+            select: exercise.select,
+            value: exercise.value,
+            numberRepetitions: exercise.numberRepetitions,
+            numberSessions: exercise.numberSessions,
+            timeOut: exercise.timeOut
+          })
         })
-      })
-      this.setState({ initialValues })
-  
+        this.setState({ initialValues })
+      }
+      const exercises = _.filter(this.state.exercises, data => data.category === this.state.categorySelect)
+      this.setState({ exerciseShow: exercises })      
     })
     .catch(err => console.error(err))
   }
-
+  
 	handleSize = () => {
 		if (this.state.bool) {
 			this.setState({classes: 'form-ex__show--active', bool: !this.state.bool, rotate: 'form-ex__arrow--active'})
@@ -119,19 +134,34 @@ class SessionForm extends React.Component {
     }
   }
 
-  onSubmit (values) {
-    console.log('Submit: ', values)
+  onSubmit (values, props) {
+    console.log('----- ONSUBMIT -----')
+    const sessionId = _.get(props, 'match.params.sessionId')
+    Promise.map(values.exercises, async exercise => {
+      console.log(exercise)
+      const body = {
+        ...exercise,
+        weight: 20,
+        sessionId
+      }
+      console.log(body)
+      await axios.post('/exercise', body)
+    })
+    .then((datas) => {
+      console.log('Exercises create or updated')
+    })
+    
   }
-
+  
   onValidate (values) {
     console.log('Validate fields');
-    console.log(values)
   }
 
   render () {
-    const { match, action } = this.props
     const { exerciseShow, exercisesForm, initialValues } = this.state
-    if (initialValues.length === 0) {
+    console.log(exercisesForm.length)
+    console.log(initialValues)
+    if (exercisesForm.length > 0 && initialValues.length === 0) {
       return (
         <div>
           Loading...
@@ -154,11 +184,12 @@ class SessionForm extends React.Component {
         </div>
         <div className='form-ex__wrapper'>
           <Formik
-            onSubmit={this.onSubmit}
             validate={this.onValidate}
             initialValues={{exercises: initialValues}}
             render={({values}) => (
-              <Form>
+              <Form
+                onSubmit={() => this.onSubmit(values, this.props)}
+              >
                 <FieldArray
                   name='exercises'
                   render={({remove, push}) => (
@@ -170,7 +201,7 @@ class SessionForm extends React.Component {
                                 <CardExerciseForm
                                 exercise={exercise}
                                 key={index}
-                                index={index}
+                                index={exercise.value}
                                 push={push}
                                 handleExercisesSelect={this.handleExercisesSelect}
                                 />
@@ -189,7 +220,7 @@ class SessionForm extends React.Component {
                                 <CardExerciseFormSelect
                                     exercise={exercise}
                                     key={index}
-                                    index={index}
+                                    index={exercise.value}
                                     remove={remove}
                                     values={values}
                                     handleExercisesSelect={this.handleExercisesSelect}

@@ -35,11 +35,11 @@ export default function CardExerciseFormSelect (props) {
         </span>
         <div>
           <label htmlFor={`exercise.${props.index}.numberSessions`}> Sessions </label>
-          <Field className='card-ex-form__title' type='number' name={`exercises.${props.index}.numberSessions`} defaultValue={props.exercise.numberSessions} />
+          <Field className='card-ex-form__title' type='number' name={`exercises.${props.index}.numberSessions`} value={props.exercise.numberSessions} />
           <label htmlFor={`exercise.${props.index}.numberRepetitions`}> Répétitions </label>
-          <Field className='card-ex-form__title' type='number' name={`exercises.${props.index}.numberRepetitions`} defaultValue={props.exercise.numberRepetitions} />
+          <Field className='card-ex-form__title' type='number' name={`exercises.${props.index}.numberRepetitions`} value={props.exercise.numberRepetitions} />
           <label htmlFor={`exercise.${props.index}.timeOut`}> Temps de repos </label>
-          <Field className='card-ex-form__title' type='number' name={`exercises.${props.index}.timeOut`} defaultValue={props.exercise.timeOut} />
+          <Field className='card-ex-form__title' type='number' name={`exercises.${props.index}.timeOut`} value={props.exercise.timeOut} />
         </div>
       </div>
     </li>
