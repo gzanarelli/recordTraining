@@ -23,7 +23,7 @@ module.exports = {
       .isInt({ min: 0, max: 999 })
       .optional(false),
     body('timeOut')
-      .isString()
+      .isInt({ min: 0, max: 999 })
       .optional(false)
   ],
   READ: [
@@ -58,7 +58,7 @@ module.exports = {
       .isInt({ min: 1, max: 999 })
       .optional(true),
     body('timeOut')
-      .isString()
+      .isInt({ min: 0, max: 999 })
       .optional(true)
 
   ],

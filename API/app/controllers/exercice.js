@@ -35,6 +35,7 @@ router.post(
   authentification.verify,
   (req, res, next) => {
     const ID = mongoose.Types.ObjectId()
+    console.log('Body: ', req.body)
     const exercise = new Exercise({
       _id: ID,
       value: _.get(req, 'body.value', 'nc'),
@@ -42,7 +43,9 @@ router.post(
       numberSessions: _.get(req, 'body.numberSessions', 1),
       numberRepetitions: _.get(req, 'body.numberRepetitions', 1),
       weight: _.get(req, 'body.weight', 1),
-      timeOut: _.get(req, 'body.timeOut', '1')
+      timeOut: _.get(req, 'body.timeOut', '1'),
+      category: _.get(req, 'body.category', ''),
+      select: true
     })
     exercise.save()
       .then(() => {
@@ -65,8 +68,8 @@ router.get(
   queryParams,
   (req, res, next) => {
     Exercise.populateItem(req.paginator)
-    .then(exercise => res.json(_.get(exercise, [0], {})))
-    .catch(next)
+      .then(exercise => res.json(_.get(exercise, [0], {})))
+      .catch(next)
   })
 
 router.put(
@@ -79,12 +82,14 @@ router.put(
       _id: _.get(req, 'params.exerciseId', null)
     }, {
       $set: {
-        value: _.get(req, 'body.value', 'nc'),
-        label: _.get(req, 'body.label', 'N/C'),
-        numberSessions: _.get(req, 'body.numberSessions', 1),
-        numberRepetitions: _.get(req, 'body.numberRepetitions', 1),
-        weight: _.get(req, 'body.weight', 1),
-        timeOut: _.get(req, 'body.timeOut', '1')
+        value: _.get(req, 'body.value'),
+        label: _.get(req, 'body.label'),
+        numberSessions: _.get(req, 'body.numberSessions'),
+        numberRepetitions: _.get(req, 'body.numberRepetitions'),
+        weight: _.get(req, 'body.weight'),
+        timeOut: _.get(req, 'body.timeOut'),
+        category: _.get(req, 'body.category', ''),
+        select: true
       }
     })
       .then(res.json({ status: true, message: 'Exercise updated.' }))
