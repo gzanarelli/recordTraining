@@ -35,6 +35,8 @@ const AnimatedSwitch = ({ props }) => {
     //     timeout={1000}
     //     classNames='page'
     //   >
+    // <div>
+  // <Redirect from='/' to='/login' />
     <Switch>
       <Route exact path='/login'>
         <Login />
@@ -49,9 +51,8 @@ const AnimatedSwitch = ({ props }) => {
       <Token exact path='/session/add/:noteId' component={SessionForm} action='post' />
       <Token exact path='/session/edit/:sessionId' component={ExerciseForm} action='put' />
       <Token exact path='/exercise/:sessionId' component={Exercise} />
-      {/* <Token exact path='/exercise/add/:sessionId' component={ExerciseForm} action='post' />
-      <Token exact path='/exercise/edit/:exerciseId' component={ExerciseForm} action='put' /> */}
     </Switch>
+    // </div>
     //   </CSSTransition>
     // </TransitionGroup>
   )

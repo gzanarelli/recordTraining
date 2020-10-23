@@ -41,6 +41,7 @@ class SessionForm extends React.Component {
   const { match } = this.props
   axios.get('/session/' + _.get(match, 'params.sessionId') + '?populate=exercisesId')
   .then(session => {
+    console.log(session.data.exercisesId);
     this.setState({
       exercisesForm: session.data.exercisesId
     })
@@ -65,8 +66,9 @@ class SessionForm extends React.Component {
         select: true,
         numberRepetitions: 0,
         numberSessions: 0,
-          weight: 0,
-          timeOut: 0
+        weight: 0,
+        timeOut: 0,
+        _id: null
         }]})
       } else {
         _.map(this.state.exercisesForm, exercise => {
@@ -77,7 +79,8 @@ class SessionForm extends React.Component {
             value: exercise.value,
             numberRepetitions: exercise.numberRepetitions,
             numberSessions: exercise.numberSessions,
-            timeOut: exercise.timeOut
+            timeOut: exercise.timeOut,
+            _id: exercise._id
           })
         })
         this.setState({ initialValues })
@@ -137,7 +140,7 @@ class SessionForm extends React.Component {
   onSubmit (values, props) {
     console.log('----- ONSUBMIT -----')
     const sessionId = _.get(props, 'match.params.sessionId')
-    Promise.map(values.exercises, async exercise => {
+    Promise.map(values.exercises, exercise => {
       console.log(exercise)
       const body = {
         ...exercise,
@@ -145,10 +148,19 @@ class SessionForm extends React.Component {
         sessionId
       }
       console.log(body)
-      await axios.post('/exercise', body)
+      console.log('_id found: ', _.get(exercise, '_id', null))
+      if (_.get(exercise, '_id', null)) {
+        return axios.put('/exercise' + _.get(exercise, '_id', null), body)
+        .then(() => console.log('request done'))
+        .catch((err) => console.error(err))
+      } else {
+        return axios.post('/exercise', body)
+        .then(() => console.log('request done'))
+        .catch((err) => console.error(err))
+      }
     })
     .then((datas) => {
-      console.log('Exercises create or updated')
+      // console.log('Exercises create or updated')
     })
     
   }
@@ -157,9 +169,14 @@ class SessionForm extends React.Component {
     console.log('Validate fields');
   }
 
+  handleRemove(remove, exercise) {
+    const index = this.state.exercisesForm.findIndex( ex => ex.value === exercise.value)
+    remove(index)
+  }
+
   render () {
     const { exerciseShow, exercisesForm, initialValues } = this.state
-    console.log(exercisesForm.length)
+    console.log('Exercise Form: ', exercisesForm)
     console.log(initialValues)
     if (exercisesForm.length > 0 && initialValues.length === 0) {
       return (
@@ -199,11 +216,12 @@ class SessionForm extends React.Component {
                             _.map(exerciseShow, (exercise, index) => {
                               return (
                                 <CardExerciseForm
-                                exercise={exercise}
-                                key={index}
-                                index={exercise.value}
-                                push={push}
-                                handleExercisesSelect={this.handleExercisesSelect}
+                                  exercise={exercise}
+                                  key={index}
+                                  index={exercise.value}
+                                  push={push}
+                                  remove={() => this.handleRemove(remove, exercise)}
+                                  handleExercisesSelect={this.handleExercisesSelect}
                                 />
                               )
                             })
@@ -217,10 +235,10 @@ class SessionForm extends React.Component {
                             {
                               _.map(values.exercises, (exercise, index) => {
                                 return (
-                                <CardExerciseFormSelect
+                                  <CardExerciseFormSelect
                                     exercise={exercise}
                                     key={index}
-                                    index={exercise.value}
+                                    index={index}
                                     remove={remove}
                                     values={values}
                                     handleExercisesSelect={this.handleExercisesSelect}

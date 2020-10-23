@@ -17,7 +17,8 @@ export default function CardExerciseForm (props) {
         type='button'
         onClick={() => {
           props.handleExercisesSelect(props.exercise)
-          props.push(props.exercise)
+          props.exercise.select ? props.remove()
+            : props.push(props.exercise)
         }}
       >
         {props.exercise.select ? <i class='far fa-trash-alt' /> : <i class='fas fa-plus' />}
