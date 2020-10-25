@@ -4,9 +4,6 @@ module.exports = {
   CREATE: [
     header('token')
       .isJWT(),
-    body('sessionId')
-      .isMongoId()
-      .optional(false),
     body('label')
       .isString()
       .optional(false),

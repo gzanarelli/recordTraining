@@ -47,16 +47,11 @@ router.post(
       category: _.get(req, 'body.category', ''),
       select: true
     })
-    exercise.save()
+    return exercise.save()
       .then(() => {
         console.log(ID)
-        Session.updateOne({
-          _id: _.get(req, 'body.sessionId', null)
-        }, {
-          $push: { exercisesId: ID }
+        res.json({ status: true, ID })
         })
-          .then(res.json({ status: true, message: 'Exercise create.' }))
-      })
       .catch(next)
   })
 
@@ -92,7 +87,7 @@ router.put(
         select: true
       }
     })
-      .then(res.json({ status: true, message: 'Exercise updated.' }))
+      .then(() => res.json({ status: true, ID: _.get(req, 'params.exerciseId', null) }))
   })
 
 router.delete(

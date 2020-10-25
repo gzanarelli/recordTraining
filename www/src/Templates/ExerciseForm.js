@@ -137,30 +137,38 @@ class SessionForm extends React.Component {
     }
   }
 
-  onSubmit (values, props) {
+  async onSubmit (values, props) {
     console.log('----- ONSUBMIT -----')
     const sessionId = _.get(props, 'match.params.sessionId')
-    Promise.map(values.exercises, exercise => {
-      console.log(exercise)
+    Promise.map(values.exercises, async exercise => {
       const body = {
         ...exercise,
         weight: 20,
         sessionId
       }
-      console.log(body)
-      console.log('_id found: ', _.get(exercise, '_id', null))
       if (_.get(exercise, '_id', null)) {
-        return axios.put('/exercise' + _.get(exercise, '_id', null), body)
-        .then(() => console.log('request done'))
-        .catch((err) => console.error(err))
+        try {
+          console.log('request done UP')
+          return await axios.put('/exercise/' + _.get(exercise, '_id', null), body)
+        } catch (err) {
+          return console.error(err)
+        }
       } else {
-        return axios.post('/exercise', body)
-        .then(() => console.log('request done'))
-        .catch((err) => console.error(err))
+        try {
+          console.log('request done POST')
+          return await axios.post('/exercise', body)
+        } catch (err_1) {
+          return console.error(err_1)
+        }
       }
     })
     .then((datas) => {
-      // console.log('Exercises create or updated')
+      console.log(datas)
+      console.log('Exercises create or updated')
+    })
+    .catch(err => {
+      console.log('Hop hop il y a une erreur !!!')
+      console.log(err)
     })
     
   }
